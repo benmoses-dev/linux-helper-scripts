@@ -42,16 +42,15 @@ apt autoremove -y
 print "${COLOR_YELLOW}"
 print "installing software..."
 print "${COLOR_RESET}"
-apt install git gnome-tweaks filezilla build-essential openjdk-17-jdk vlc libreoffice -y
+apt install git build-essential openjdk-17-jdk tmux -y
+apt install vlc vim jq rsync -y
+apt install neofetch cmatrix lolcat -y
 
 print "${COLOR_YELLOW}"
 print "installing snaps..."
 print "${COLOR_RESET}"
 snap install thunderbird
-snap install brave
-snap install chromium
 snap install starship --edge
-snap install codium --classic
 
 print "${COLOR_YELLOW}"
 print "installing syncthing"
@@ -75,7 +74,9 @@ echo \
 chmod a+r /etc/apt/keyrings/docker.gpg
 apt update && apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
-cat << 'EOL' > /tmp/post_install_user.sh
+cat << 'EOL' > ./ubuntu_2204_desktop_user-setup.sh
+#!/usr/bin/env bash
+
 set -e
 
 # Colours
@@ -91,10 +92,6 @@ print() {
         echo -e "$@"
     fi
 }
-
-print "${COLOR_YELLOW}"
-echo "The following commmands will be executed as user: `whoami`"
-print "${COLOR_RESET}"
 
 print "${COLOR_YELLOW}"
 print "installing node"
@@ -114,14 +111,13 @@ touch ~/.config/starship.toml
 echo 'eval "$(starship init bash)"' >> ~/.bashrc
 EOL
 
-print "${COLOR_YELLOW}"
-echo "-------------------"
-echo "Dropping Privileges"
-echo "-------------------"
-print "${COLOR_RESET}"
-
-sudo -u test bash /tmp/post_install_user.sh
-
 print "${COLOR_GREEN}"
 print "Done!"
 print "${COLOR_RESET}"
+
+print "${COLOR_YELLOW}"
+echo "-------------------"
+echo "Now run ubuntu_2204_desktop_user-setup.sh with user privileges..."
+echo "-------------------"
+print "${COLOR_RESET}"
+

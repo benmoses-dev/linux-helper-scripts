@@ -42,7 +42,7 @@ print "${COLOR_YELLOW}"
 print "installing software..."
 print "${COLOR_RESET}"
 apt install git build-essential openjdk-17-jdk tmux -y
-apt install vim jq rsync neofetch htop -y
+apt install vim trash-cli multitail tree jq rsync neofetch htop -y
 apt install mariadb-server nginx -y
 apt install php php-fpm php-cli php-mysql php-zip php-gd php-mbstring php-curl php-xml php-bcmath -y
 

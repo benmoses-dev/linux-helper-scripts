@@ -1,26 +1,41 @@
 # Get editor completions based on the config schema
 #"$schema" = 'https://starship.rs/config-schema.json'
 
-# Inserts a blank line between shell prompts
+format = '''
+ $username$directory$git_branch$git_status$c$php$elixir$elm$golang$haskell$java$kotlin$julia$nim$rust$dotnet$python$package$vagrant$docker_context$time
+ $all$character '''
+
 add_newline = true
 
 [line_break]
+disabled = true
+
+[status]
 disabled = false
 
-# Replace the "❯" symbol in the prompt with "➜"
-[character]
-success_symbol = "[➜](bold green)"
-error_symbol = "[✗](bold red)"
+[time]
+disabled = false
+time_format = "%R"
+style = "bg:#33658A"
+format = '[  $time  ]($style)'
 
-# Disable the package module, hiding it from the prompt completely
-#[package]
-#disabled = true
+[memory_usage]
+disabled = false
+threshold = 75
+
+[character]
+disabled = false
+success_symbol = '[➜](bold green)'
+error_symbol = '[➜](bold red)'
 
 [git_branch]
-style = "bold red"
+style = "bg:#4C566A"
+format = '[  on $symbol $branch  ]($style)'
 disabled = false
 
 [git_status]
+style = "bg:#4C566A"
+format = '[$all_status$ahead_behind  ]($style)'
 disabled = false
 
 [battery]
@@ -34,6 +49,8 @@ threshold = 30
 style = "bold red"
 
 [directory]
+style = "bg:#434C5E"
+format = "[  $path  ]($style)"
 truncation_length = 3
 truncation_symbol = ".../"
 
@@ -41,8 +58,76 @@ truncation_symbol = ".../"
 disabled = false
 
 [username]
-style_user = "white bold"
-style_root = "black bold"
-format = "[$user]($style) "
+style_user = "bg:#3B4252"
+style_root = "bg:#3B4252"
+format = '[  $user in  ]($style)'
 disabled = false
 show_always = false
+
+[package]
+style = "bg:#3e93c1"
+format = '[  $symbol($version) ]($style)'
+
+[vagrant]
+style = "bg:#3e93c1"
+format = '[  $symbol($version) ]($style)'
+
+[nodejs]
+disabled = true
+
+[python]
+style = "bg:#3e93c1"
+format = '[  $symbol($version) ]($style)'
+
+[golang]
+style = "bg:#3e93c1"
+format = '[  $symbol($version) ]($style)'
+
+[kotlin]
+style = "bg:#3e93c1"
+format = '[  $symbol($version) ]($style)'
+
+[php]
+style = "bg:#3e93c1"
+format = '[  $symbol($version)  ]($style)'
+
+[dotnet]
+style = "bg:#3e93c1"
+format = '[  $symbol($version)  ]($style)'
+
+[haskell]
+style = "bg:#3e93c1"
+format = '[  $symbol($version)  ]($style)'
+
+[java]
+style = "bg:#3e93c1"
+format = '[  $symbol($version)  ]($style)'
+
+[julia]
+style = "bg:#3e93c1"
+format = '[  $symbol($version)  ]($style)'
+
+[nim]
+style = "bg:#3e93c1"
+format = '[  $symbol($version)  ]($style)'
+
+[rust]
+style = "bg:#3e93c1"
+format = '[  $symbol($version)  ]($style)'
+
+[elixir]
+style = "bg:#3e93c1"
+format = '[  $symbol($version)  ]($style)'
+
+[elm]
+style = "bg:#3e93c1"
+format = '[  $symbol($version)  ]($style)'
+
+[c]
+style = "bg:#3e93c1"
+format = '[  $symbol($version)  ]($style)'
+
+[docker_context]
+style = "bg:#06969A"
+format = '[  $symbol$context  ]($style) $path'
+

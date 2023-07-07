@@ -108,12 +108,13 @@ print "configuring bash"
 print "${COLOR_RESET}"
 mkdir -p ~/.config/
 touch ~/.config/starship.toml
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/starship.toml > ~/.config/starship.toml
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.bashrc > ~/.bashrc
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.bash_aliases > ~/.bash_aliases
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.profile > ~/.profile
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.vimrc > ~/.vimrc
-echo 'eval "$(starship init bash)"' >> ~/.bashrc
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/starship.toml > $HOME/starship.toml
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.bashrc > $HOME/.bashrc
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.bash_aliases > $HOME/.bash_aliases
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.profile > $HOME/.profile
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.vimrc > $HOME/.vimrc
+echo 'export STARSHIP_CONFIG=$HOME/starship.toml' >> $HOME/.bashrc
+echo 'eval "$(starship init bash)"' >> $HOME/.bashrc
 EOL
 
 print "${COLOR_GREEN}"

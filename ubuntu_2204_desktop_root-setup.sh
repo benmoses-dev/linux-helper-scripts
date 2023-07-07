@@ -44,7 +44,7 @@ print "installing software..."
 print "${COLOR_RESET}"
 apt install git build-essential openjdk-17-jdk tmux -y
 apt install vlc vim trash-cli multitail tree jq rsync -y
-apt install neofetch cmatrix lolcat -y
+apt install neofetch cmatrix lolcat sl -y
 
 print "${COLOR_YELLOW}"
 print "installing snaps..."
@@ -104,10 +104,15 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 nvm install --lts
 
 print "${COLOR_YELLOW}"
-print "configuring starship"
+print "configuring bash"
 print "${COLOR_RESET}"
 mkdir -p ~/.config/
 touch ~/.config/starship.toml
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/starship.toml > ~/.config/starship.toml
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.bashrc > ~/.bashrc
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.bash_aliases > ~/.bash_aliases
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.profile > ~/.profile
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.vimrc > ~/.vimrc
 echo 'eval "$(starship init bash)"' >> ~/.bashrc
 EOL
 

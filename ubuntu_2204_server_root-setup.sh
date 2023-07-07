@@ -20,13 +20,13 @@ showLogo() {
     print "${COLOR_YELLOW}"
     print "Ubuntu Setup"
     print "${COLOR_GREEN}"
-    print "  __  _____  ____ __       __ _____  ____   "
-    print " / / |  ___||    \\ \     / /| ____||    \  "
-    print "| |  | |___ | () | \ \   / / | |___ | () |  "
-    print " \ \ |  ___||    /  \ \ / /  |  ___||    /  "
-    print "  | || |___ | |\ \   \ v /   | |___ | |\ \  "
-    print " /_/ |_____||_| \_\   \_/    |_____|| | \_\ "
-    print "                                            "
+    print "  __  _____  ____  __       __ _____  ____   "
+    print " / / |  ___||    \ \ \     / /| ____||    \  "
+    print "| |  | |___ | () |  \ \   / / | |___ | () |  "
+    print " \ \ |  ___||    /   \ \ / /  |  ___||    /  "
+    print "  | || |___ | |\ \    \ v /   | |___ | |\ \  "
+    print " /_/ |_____||_| \_\    \_/    |_____|| | \_\ "
+    print "                                             "
     print "${COLOR_RESET}"
 }
 
@@ -75,7 +75,7 @@ EOL
 
 sed 's/#server_tokens/server_tokens/' /etc/nginx/nginx.conf
 
-systemctl restart nginx
+systemctl restart nginx.service
 
 print "${COLOR_YELLOW}"
 print "installing docker..."
@@ -120,10 +120,15 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 nvm install --lts
 
 print "${COLOR_YELLOW}"
-print "configuring starship"
+print "configuring bash"
 print "${COLOR_RESET}"
 mkdir -p ~/.config/
 touch ~/.config/starship.toml
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/starship.toml > ~/.config/starship.toml
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.bashrc > ~/.bashrc
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.bash_aliases > ~/.bash_aliases
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.profile > ~/.profile
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.vimrc > ~/.vimrc
 echo 'eval "$(starship init bash)"' >> ~/.bashrc
 EOL
 

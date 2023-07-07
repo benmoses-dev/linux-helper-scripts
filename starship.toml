@@ -2,7 +2,7 @@
 #"$schema" = 'https://starship.rs/config-schema.json'
 
 format = '''
- $username$directory$git_branch$git_status$c$php$elixir$elm$golang$haskell$java$kotlin$julia$nim$rust$dotnet$python$package$vagrant$docker_context$time
+ [](#3B4252)$username[](bg:#434C5E fg:#3B4252)$directory[](fg:#434C5E bg:#4C566A)$git_branch$git_status[](fg:#4C566A bg:#86BBD8)$c$php$elixir$nodejs$elm$golang$haskell$java$kotlin$julia$nim$rust$dotnet$python$package$vagrant[](fg:#86BBD8 bg:#06969A)$docker_context[](fg:#06969A bg:#33658A)$time[ ](fg:#33658A)
  $all$character '''
 
 add_newline = true
@@ -17,7 +17,7 @@ disabled = false
 disabled = false
 time_format = "%R"
 style = "bg:#33658A"
-format = '[  $time  ]($style)'
+format = '[ $time ]($style)'
 
 [memory_usage]
 disabled = false
@@ -30,12 +30,12 @@ error_symbol = '[➜](bold red)'
 
 [git_branch]
 style = "bg:#4C566A"
-format = '[  on $symbol $branch  ]($style)'
+format = '[ on $symbol$branch ]($style)'
 disabled = false
 
 [git_status]
 style = "bg:#4C566A"
-format = '[$all_status$ahead_behind  ]($style)'
+format = '[$all_status$ahead_behind ]($style)'
 disabled = false
 
 [battery]
@@ -50,9 +50,14 @@ style = "bold red"
 
 [directory]
 style = "bg:#434C5E"
-format = "[  $path  ]($style)"
+format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = ".../"
+
+[directory.substitutions]
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
 
 [sudo]
 disabled = false
@@ -60,74 +65,75 @@ disabled = false
 [username]
 style_user = "bg:#3B4252"
 style_root = "bg:#3B4252"
-format = '[  $user in  ]($style)'
+format = '[ $user in ]($style)'
 disabled = false
 show_always = false
 
 [package]
 style = "bg:#3e93c1"
-format = '[  $symbol($version) ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [vagrant]
 style = "bg:#3e93c1"
-format = '[  $symbol($version) ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [nodejs]
-disabled = true
+style = "bg:#86BBD8"
+format = '[ $symbol($version) ]($style)'
 
 [python]
 style = "bg:#3e93c1"
-format = '[  $symbol($version) ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [golang]
 style = "bg:#3e93c1"
-format = '[  $symbol($version) ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [kotlin]
 style = "bg:#3e93c1"
-format = '[  $symbol($version) ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [php]
-style = "bg:#3e93c1"
-format = '[  $symbol($version)  ]($style)'
+style = "bg:#86BBD8"
+format = '[ $symbol($version) ]($style)'
 
 [dotnet]
 style = "bg:#3e93c1"
-format = '[  $symbol($version)  ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [haskell]
 style = "bg:#3e93c1"
-format = '[  $symbol($version)  ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [java]
 style = "bg:#3e93c1"
-format = '[  $symbol($version)  ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [julia]
 style = "bg:#3e93c1"
-format = '[  $symbol($version)  ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [nim]
 style = "bg:#3e93c1"
-format = '[  $symbol($version)  ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [rust]
 style = "bg:#3e93c1"
-format = '[  $symbol($version)  ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [elixir]
 style = "bg:#3e93c1"
-format = '[  $symbol($version)  ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [elm]
 style = "bg:#3e93c1"
-format = '[  $symbol($version)  ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [c]
 style = "bg:#3e93c1"
-format = '[  $symbol($version)  ]($style)'
+format = '[ $symbol($version) ]($style)'
 
 [docker_context]
 style = "bg:#06969A"
-format = '[  $symbol$context  ]($style) $path'
+format = '[ $symbol$context ]($style) $path'
 

@@ -70,11 +70,11 @@ disabled = false
 show_always = false
 
 [package]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [vagrant]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [nodejs]
@@ -82,15 +82,15 @@ style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [python]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [golang]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [kotlin]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [php]
@@ -98,39 +98,39 @@ style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [dotnet]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [haskell]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [java]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [julia]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [nim]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [rust]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [elixir]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [elm]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [c]
-style = "bg:#3e93c1"
+style = "bg:#86BBD8"
 format = '[ $symbol($version) ]($style)'
 
 [docker_context]

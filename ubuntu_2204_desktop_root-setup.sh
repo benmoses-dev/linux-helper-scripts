@@ -104,6 +104,11 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 nvm install --lts
 
 print "${COLOR_YELLOW}"
+print "installing rust"
+print "${COLOR_RESET}"
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+print "${COLOR_YELLOW}"
 print "configuring bash"
 print "${COLOR_RESET}"
 mkdir -p $HOME/.config/
@@ -118,7 +123,6 @@ echo 'eval "$(starship init bash)"' >> $HOME/.bashrc
 print "${COLOR_YELLOW}"
 print "configuring vim"
 print "${COLOR_RESET}"
-
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.vimrc > $HOME/.vimrc
 mkdir -p $HOME/.vim/pack/plugins/start
 mkdir -p $HOME/.vim/pack/plugins/opt
@@ -130,6 +134,10 @@ git clone https://github.com/vim-airline/vim-airline $HOME/.vim/pack/plugins/sta
 vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/vim-airline/doc" -c q
 git clone https://github.com/airblade/vim-gitgutter.git $HOME/.vim/pack/plugins/start/vim-gitgutter
 vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/vim-gitgutter/doc" -c q
+git clone https://github.com/rust-lang/rust.vim $HOME/.vim/pack/plugins/start/rust.vim
+vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/rust.vim/doc" -c q
+git clone --depth 1 https://github.com/dense-analysis/ale.git $HOME/.vim/pack/plugins/start/ale
+vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/ale/doc" -c q
 EOL
 
 print "${COLOR_GREEN}"

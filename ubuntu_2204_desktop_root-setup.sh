@@ -43,7 +43,7 @@ print "${COLOR_YELLOW}"
 print "installing software..."
 print "${COLOR_RESET}"
 apt install git build-essential openjdk-17-jdk tmux -y
-apt install vlc vim trash-cli multitail tree jq rsync -y
+apt install vlc vim trash-cli multitail tree jq rsync fzf -y
 apt install neofetch cmatrix lolcat sl -y
 
 print "${COLOR_YELLOW}"
@@ -112,9 +112,24 @@ wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/ma
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.bashrc > $HOME/.bashrc
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.bash_aliases > $HOME/.bash_aliases
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.profile > $HOME/.profile
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.vimrc > $HOME/.vimrc
 echo 'export STARSHIP_CONFIG=$HOME/starship.toml' >> $HOME/.bashrc
 echo 'eval "$(starship init bash)"' >> $HOME/.bashrc
+
+print "${COLOR_YELLOW}"
+print "configuring vim"
+print "${COLOR_RESET}"
+
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.vimrc > $HOME/.vimrc
+mkdir -p $HOME/.vim/pack/plugins/start
+mkdir -p $HOME/.vim/pack/plugins/opt
+
+# Plugins
+git clone https://github.com/preservim/nerdtree.git $HOME/.vim/pack/plugins/start/nerdtree
+vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/nerdtree/doc" -c q
+git clone https://github.com/vim-airline/vim-airline $HOME/.vim/pack/plugins/start/vim-airline
+vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/vim-airline/doc" -c q
+git clone https://github.com/airblade/vim-gitgutter.git $HOME/.vim/pack/plugins/start/vim-gitgutter
+vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/vim-gitgutter/doc" -c q
 EOL
 
 print "${COLOR_GREEN}"

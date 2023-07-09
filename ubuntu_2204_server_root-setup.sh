@@ -36,15 +36,21 @@ print "${COLOR_YELLOW}"
 print "updating system..."
 print "${COLOR_RESET}"
 apt update && apt upgrade -y
+snap refresh
 apt autoremove -y
 
 print "${COLOR_YELLOW}"
 print "installing software..."
 print "${COLOR_RESET}"
-apt install git build-essential openjdk-17-jdk tmux -y
-apt install vim trash-cli multitail tree jq rsync fzf neofetch htop -y
+apt install git build-essential openjdk-17-jdk tmux python-dev python-pip python3-dev python3-pip python3-neovim -y
+apt install vim ripgrep xclip trash-cli multitail tree jq rsync fzf libfuse2 neofetch htop -y
 apt install mariadb-server nginx -y
 apt install php php-fpm php-cli php-mysql php-zip php-gd php-mbstring php-curl php-xml php-bcmath -y
+
+print "${COLOR_YELLOW}"
+print "installing snaps..."
+print "${COLOR_RESET}"
+snap install starship --edge
 
 systemctl enable --now php8.1-fpm
 systemctl enable --now nginx
@@ -137,23 +143,27 @@ echo 'export STARSHIP_CONFIG=$HOME/starship.toml' >> $HOME/.bashrc
 echo 'eval "$(starship init bash)"' >> $HOME/.bashrc
 
 print "${COLOR_YELLOW}"
-print "configuring vim"
+print "configuring vim and neovim"
 print "${COLOR_RESET}"
+
+# legacy vim setup
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.vimrc > $HOME/.vimrc
 mkdir -p $HOME/.vim/pack/plugins/start
 mkdir -p $HOME/.vim/pack/plugins/opt
-
-# Plugins
 git clone https://github.com/preservim/nerdtree.git $HOME/.vim/pack/plugins/start/nerdtree
 vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/nerdtree/doc" -c q
 git clone https://github.com/vim-airline/vim-airline $HOME/.vim/pack/plugins/start/vim-airline
 vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/vim-airline/doc" -c q
 git clone https://github.com/airblade/vim-gitgutter.git $HOME/.vim/pack/plugins/start/vim-gitgutter
 vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/vim-gitgutter/doc" -c q
-git clone https://github.com/rust-lang/rust.vim $HOME/.vim/pack/plugins/start/rust.vim
-vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/rust.vim/doc" -c q
-git clone --depth 1 https://github.com/dense-analysis/ale.git $HOME/.vim/pack/plugins/start/ale
-vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/ale/doc" -c q
+
+# neovim setup
+mkdir -p $HOME/.local/bin
+wget -O $HOME/.local/bin/nvim https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+chmod u+x $HOME/.local/bin/nvim
+mkdir -p $HOME/.local/share/nvim/site/pack/packer/start
+git clone --depth 1 https://github.com/wbthomason/packer.nvim $HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
+git clone https://github.com/benmoses-dev/my-neovim.git $HOME/.config/nvim
 EOL
 
 print "${COLOR_GREEN}"

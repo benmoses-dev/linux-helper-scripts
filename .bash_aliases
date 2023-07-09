@@ -49,7 +49,8 @@ alias ps='ps auxf'
 alias ping='ping -c 10'
 alias less='less -R'
 alias multitail='multitail --no-repeat -c'
-alias vi='vim'
+alias vi='nvim'
+alias vim='nvim'
 
 # cd into the old directory
 alias bd='cd "$OLDPWD"'

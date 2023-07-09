@@ -43,7 +43,7 @@ print "${COLOR_YELLOW}"
 print "installing software..."
 print "${COLOR_RESET}"
 apt install git build-essential openjdk-17-jdk tmux python-dev python-pip python3-dev python3-pip python3-neovim -y
-apt install vlc vim ripgrep xclip trash-cli multitail tree jq rsync fzf libfuse2 -y
+apt install vlc vim ripgrep fd-find xclip trash-cli multitail tree jq rsync fzf libfuse2 -y
 apt install neofetch htop cmatrix lolcat sl -y
 
 print "${COLOR_YELLOW}"

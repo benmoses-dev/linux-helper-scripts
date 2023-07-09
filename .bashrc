@@ -96,4 +96,5 @@ if ! shopt -oq posix; then
 fi
 
 export EDITOR=nvim
+export FZF_DEFAULT_COMMAND="fdfind --hidden --type f"
 

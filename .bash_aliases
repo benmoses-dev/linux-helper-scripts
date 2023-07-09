@@ -71,6 +71,9 @@ alias folderssort='find . -maxdepth 1 -type d -print0 | xargs -0 du -sk | sort -
 alias tree='tree -CAhF --dirsfirst'
 alias treed='tree -CAFd'
 alias mountedinfo='df -hT'
+alias fzf='fzf --exact'
+alias fvi='fzf --exact --print0 | xargs -0 -o nvim'
+alias fd='fdfind --hidden'
 
 # aliases for archives
 alias mktar='tar -cvf'

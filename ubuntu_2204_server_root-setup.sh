@@ -42,7 +42,7 @@ apt autoremove -y
 print "${COLOR_YELLOW}"
 print "installing software..."
 print "${COLOR_RESET}"
-apt install git build-essential openjdk-17-jdk tmux python-dev python-pip python3-dev python3-pip python3-neovim -y
+apt install git build-essential openjdk-17-jdk tmux python3-dev python3-pip -y
 apt install vim ripgrep fd-find xclip trash-cli multitail tree jq rsync fzf libfuse2 neofetch htop -y
 apt install mariadb-server nginx -y
 apt install php php-fpm php-cli php-mysql php-zip php-gd php-mbstring php-curl php-xml php-bcmath -y

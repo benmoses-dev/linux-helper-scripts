@@ -50,7 +50,6 @@ print "${COLOR_YELLOW}"
 print "installing snaps..."
 print "${COLOR_RESET}"
 snap install thunderbird
-snap install starship --edge
 
 print "${COLOR_YELLOW}"
 print "installing syncthing"
@@ -111,11 +110,25 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 print "${COLOR_YELLOW}"
 print "installing composer"
 print "${COLOR_RESET}"
+EXPECTED_CHECKSUM="$(php -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')"
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-php -r "if (hash_file('sha384', 'composer-setup.php') === 'e21205b207c3ff031906575712edab6f13eb0b361f2085f1f1237b7126d785e826a450292b6cfd1d64d92e6563bbde02') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-php composer-setup.php
-php -r "unlink('composer-setup.php');"
-mv ./composer.phar $HOME/.local/bin/composer
+ACTUAL_CHECKSUM="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"
+if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]
+then
+    >&2 echo 'ERROR: Invalid installer checksum'
+    rm composer-setup.php
+else
+    php composer-setup.php --quiet
+    RESULT=$?
+    rm composer-setup.php
+    echo $RESULT
+fi
+mv composer.phar $HOME/.local/bin/composer
+
+print "${COLOR_YELLOW}"
+print "installing starship"
+print "${COLOR_RESET}"
+curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir "$HOME/.local/bin"
 
 print "${COLOR_YELLOW}"
 print "configuring bash"

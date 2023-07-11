@@ -131,6 +131,15 @@ print "${COLOR_RESET}"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 print "${COLOR_YELLOW}"
+print "installing composer"
+print "${COLOR_RESET}"
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'e21205b207c3ff031906575712edab6f13eb0b361f2085f1f1237b7126d785e826a450292b6cfd1d64d92e6563bbde02') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+mv ./composer.phar $HOME/.local/bin/composer
+
+print "${COLOR_YELLOW}"
 print "configuring bash"
 print "${COLOR_RESET}"
 mkdir -p $HOME/.config/

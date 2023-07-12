@@ -1,8 +1,5 @@
-set number
-set relativenumber
-
-set updatetime=50
 set scrolloff=8
+set relativenumber
 
 " Do incremental searching.
 set incsearch
@@ -34,4 +31,5 @@ nnoremap <leader>sr :%s/\<\>//gc
 
 nnoremap Q gq
 vnoremap Q gq
+map <leader>f <Action>(ReformatCode)
 

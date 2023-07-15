@@ -71,8 +71,15 @@ alias folderssort='find . -maxdepth 1 -type d -print0 | xargs -0 du -sk | sort -
 alias tree='tree -CAhF --dirsfirst'
 alias treed='tree -CAFd'
 alias mountedinfo='df -hT'
-alias fzf='fzf --exact'
+
+# fuzzy-find under the current directory and open the file or directory in neovim
+# useful for quickly finding and editing stand-alone files such as configs
 alias fvi='fzf --exact --print0 | xargs -0 -o nvim'
+
+# alias for tmux sessionizer
+# find all directories as configured in ~/.local/bin/tmux-sessionizer
+# opens the selected directory in a new tmux session and attaches
+# useful for quickly finding projects, which can then be opened with vi .
 alias tsesh='tmux-sessionizer'
 
 # aliases for archives
@@ -83,7 +90,7 @@ alias untar='tar -xvf'
 alias unbz2='tar -xvjf'
 alias ungz='tar -xvzf'
 
-# Extracts any archive(s) (if unp isn't installed)
+# extracts any archive(s) (if unp isn't installed)
 extract () {
 	for archive in "$@"; do
 		if [ -f "$archive" ] ; then

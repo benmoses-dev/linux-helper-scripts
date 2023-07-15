@@ -80,7 +80,7 @@ alias fvi='fzf --exact --print0 | xargs -0 -o nvim'
 # find all directories as configured in ~/.local/bin/tmux-sessionizer
 # opens the selected directory in a new tmux session and attaches
 # useful for quickly finding projects, which can then be opened with vi .
-alias tsesh='tmux-sessionizer'
+alias ts='tmux-sessionizer'
 
 # aliases for archives
 alias mktar='tar -cvf'
@@ -114,7 +114,8 @@ extract () {
 	done
 }
 
-# Searches for text in all files in the current folder
+# searches for text in all files in the current folder
+# Todo: rewrite using ripgrep
 ftext ()
 {
 	# -i case-insensitive

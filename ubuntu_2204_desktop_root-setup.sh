@@ -92,6 +92,8 @@ print() {
     fi
 }
 
+mkdir -p $HOME/.local/bin
+
 print "${COLOR_YELLOW}"
 print "installing node"
 print "${COLOR_RESET}"
@@ -143,6 +145,13 @@ echo 'export STARSHIP_CONFIG=$HOME/starship.toml' >> $HOME/.bashrc
 echo 'eval "$(starship init bash)"' >> $HOME/.bashrc
 
 print "${COLOR_YELLOW}"
+print "configuring tmux"
+print "${COLOR_RESET}"
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/tmux-sessionizer > $HOME/.local/bin
+chmod 755 $HOME/.local/bin/tmux-sessionizer
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.tmux.conf > $HOME/.tmux.conf
+
+print "${COLOR_YELLOW}"
 print "configuring vim and neovim"
 print "${COLOR_RESET}"
 
@@ -158,7 +167,6 @@ git clone https://github.com/airblade/vim-gitgutter.git $HOME/.vim/pack/plugins/
 vim -u NONE -c "helptags $HOME/.vim/pack/plugins/start/vim-gitgutter/doc" -c q
 
 # neovim setup
-mkdir -p $HOME/.local/bin
 wget -O $HOME/.local/bin/nvim https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 chmod u+x $HOME/.local/bin/nvim
 mkdir -p $HOME/.local/share/nvim/site/pack/packer/start

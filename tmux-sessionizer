@@ -10,17 +10,27 @@ if [[ -z $selected ]]; then
     exit 0
 fi
 
+# tidy up that session name a bit
 selected_name=$(basename "$selected" | tr . _ | tr [:space:] _)
-tmux_running=$(pgrep tmux)
 
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+tmux_running=$(pgrep tmux)
+if [[ -z $tmux_running ]]; then
+    # tmux is not running, create a new attached session
     tmux new-session -s "$selected_name" -c "$selected"
     exit 0
 fi
 
 if ! tmux has-session -t="$selected_name" 2> /dev/null; then
+    # tmux is running but the session does not exist, so first create a detached session
     tmux new-session -ds "$selected_name" -c "$selected"
 fi
 
-tmux switch-client -t "$selected_name"
+# at this point tmux is running and a session exists, so either attach or switch client
+if [[ -z $TMUX ]]; then
+    # tmux is not attached, so attach to the session
+    tmux attach -t "$selected_name"
+    exit 0
+fi
 
+# tmux is attached, so just switch client (does nothing if already in the correct session)
+tmux switch-client -t "$selected_name"

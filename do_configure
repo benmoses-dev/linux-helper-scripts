@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+projectOne="$1"
+projectTwo="$2"
+
+if [[ -n "$projectOne" ]] && [[ -d /var/www/"${projectOne}" ]]; then
+    chown -R www-data:www-data /var/www/"${projectOne}"
+    echo "ownership changed to www-data in /var/www/${projectOne}"
+fi
+
+if [[ -n "$projectTwo" ]] && [[ -d /var/www/"${projectTwo}" ]]; then
+    chown -R www-data:www-data /var/www/"${projectTwo}"
+    echo "ownership changed to www-data in /var/www/${projectTwo}"
+fi

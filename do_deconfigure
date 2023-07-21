@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+projectOne="$1"
+projectTwo="$2"
+username=$(id -un 1000)
+
+if [[ -n "$projectOne" ]] && [[ -d /var/www/"${projectOne}" ]]; then
+    chown -R "${username}":"${username}" /var/www/"${projectOne}"
+    echo "ownership changed to ${username} in /var/www/${projectOne}"
+fi
+
+if [[ -n "$projectTwo" ]] && [[ -d /var/www/"${projectTwo}" ]]; then
+    chown -R "${username}":"${username}" /var/www/"${projectTwo}"
+    echo "ownership changed to ${username} in /var/www/${projectTwo}"
+fi
+

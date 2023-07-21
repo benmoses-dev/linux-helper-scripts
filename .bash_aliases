@@ -33,7 +33,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 # open file manager in specified directory
 fm-open () {
-	nohup nautilus -w $1 > /dev/null 2>&1 &
+	nohup nautilus -w "$1" > /dev/null 2>&1 &
 }
 
 # change to windows home dir in wsl
@@ -94,18 +94,18 @@ alias ungz='tar -xvzf'
 extract () {
 	for archive in "$@"; do
 		if [ -f "$archive" ] ; then
-			case $archive in
-				*.tar.bz2)   tar xvjf $archive    ;;
-				*.tar.gz)    tar xvzf $archive    ;;
-				*.bz2)       bunzip2 $archive     ;;
-				*.rar)       rar x $archive       ;;
-				*.gz)        gunzip $archive      ;;
-				*.tar)       tar xvf $archive     ;;
-				*.tbz2)      tar xvjf $archive    ;;
-				*.tgz)       tar xvzf $archive    ;;
-				*.zip)       unzip $archive       ;;
-				*.Z)         uncompress $archive  ;;
-				*.7z)        7z x $archive        ;;
+			case "$archive" in
+				*.tar.bz2)   tar xvjf "$archive"    ;;
+				*.tar.gz)    tar xvzf "$archive"    ;;
+				*.bz2)       bunzip2 "$archive"     ;;
+				*.rar)       rar x "$archive"       ;;
+				*.gz)        gunzip "$archive"      ;;
+				*.tar)       tar xvf "$archive"     ;;
+				*.tbz2)      tar xvjf "$archive"    ;;
+				*.tgz)       tar xvzf "$archive"    ;;
+				*.zip)       unzip "$archive"       ;;
+				*.Z)         uncompress "$archive"  ;;
+				*.7z)        7z x "$archive"        ;;
 				*)           echo "don't know how to extract '$archive'..." ;;
 			esac
 		else
@@ -127,4 +127,12 @@ ftext ()
 	# optional: -l only print filenames and not the matching lines ex. grep -irl "$1" *
 	grep -iIHrn --color=always "$1" . | less -r
 }
+
+function artisan() {
+    php artisan "$@"
+}
+
+alias art=artisan
+alias xoff='sudo phpdismod -s cli xdebug'
+alias xon='sudo phpenmod -s cli xdebug'
 

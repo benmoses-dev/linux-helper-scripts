@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+## Check and warn if running as root.
+if [[ $EUID = 0 ]]; then
+    echo "do not run as root..."
+    exit 1
+fi
+
+projectOne="$1"
+projectTwo="$2"
+
+if [[ -n "$projectOne" ]] && [[ -d /var/www/"${projectOne}" ]]; then
+    rsync -Pcauv --delete /home/user/GitProjects/"${projectOne}"/ /var/www/"${projectOne}"/
+    find /var/www/"${projectOne}"/ -type f -exec chmod 664 {} +
+    find /var/www/"${projectOne}"/ -type d -exec chmod 775 {} +
+    echo "moved ${projectOne}"
+fi
+
+if [[ -n "$projectTwo" ]] && [[ -d /var/www/"${projectTwo}" ]]; then
+    rsync -Pcauv --delete /home/user/GitProjects/"${projectTwo}"/ /var/www/"${projectTwo}"/
+    find /var/www/"${projectTwo}"/ -type f -exec chmod 664 {} +
+    find /var/www/"${projectTwo}"/ -type d -exec chmod 775 {} +
+    echo "moved ${projectTwo}"
+fi
+

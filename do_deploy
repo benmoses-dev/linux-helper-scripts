@@ -1,25 +1,40 @@
 #!/usr/bin/env bash
 
-## Check and warn if running as root.
-if [[ $EUID = 0 ]]; then
-    echo "do not run as root..."
-    exit 1
+if [[ -z $(command -v fzf) ]]; then
+    echo "ensure fzf is installed..."
+    exit 0
 fi
 
-projectOne="$1"
-projectTwo="$2"
+selected=$(find /home/user/GitProjects -mindepth 1 -maxdepth 1 -type d | fzf)
 
-if [[ -n "$projectOne" ]] && [[ -d /var/www/"${projectOne}" ]]; then
-    rsync -Pcauv --delete /home/user/GitProjects/"${projectOne}"/ /var/www/"${projectOne}"/
-    find /var/www/"${projectOne}"/ -type f -exec chmod 664 {} +
-    find /var/www/"${projectOne}"/ -type d -exec chmod 775 {} +
-    echo "moved ${projectOne}"
+# Get just the final directory name without the path and without any leading or trailing whitespace
+selected=$(basename -z "${selected}" | tr -d '/' | xargs)
+
+if [[ -z "$selected" ]]; then
+    echo "no project selected"
+    exit 0
 fi
 
-if [[ -n "$projectTwo" ]] && [[ -d /var/www/"${projectTwo}" ]]; then
-    rsync -Pcauv --delete /home/user/GitProjects/"${projectTwo}"/ /var/www/"${projectTwo}"/
-    find /var/www/"${projectTwo}"/ -type f -exec chmod 664 {} +
-    find /var/www/"${projectTwo}"/ -type d -exec chmod 775 {} +
-    echo "moved ${projectTwo}"
+if [[ ! -d "/var/www/${selected}" ]]; then
+    echo "target directory /var/www/${selected} does not exist, please create it first"
+    exit 0
 fi
+
+# Sync the files from the home project folder to the nginx document root
+rsync -Pcav --delete "/home/user/GitProjects/${selected}/" "/var/www/${selected}/"
+echo "moved ${selected}"
+
+# Make all files readable and writable by user and group
+find "/var/www/${selected}/" -type f -exec chmod 664 {} +
+echo "changed files to 664"
+
+# Make all folders navigable by anyone, writable by user and group
+find "/var/www/${selected}/" -type d -exec chmod 775 {} +
+echo "changed folders to 775"
+
+# Change the ownership back to nginx for serving
+chown -R www-data:www-data "/var/www/${selected}"
+echo "changed ownership of /var/www/${selected} to www-data:www-data"
+
+echo "done."
 

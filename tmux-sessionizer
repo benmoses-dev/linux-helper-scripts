@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
 
+if [[ -z $(command -v fdfind) ]] || [[ -z $(command -v fzf) ]]; then
+	echo "Please install fdfind and fzf!"
+	exit 0
+fi
+
 if [[ $# -eq 1 ]]; then
-    selected=$1
+	selected=$1
 else
-    selected=$(fdfind . ~/GitProjects ~/ --exact-depth 1 --type d --hidden | fzf)
+	selected=$(fdfind . ~/GitProjects ~/ --exact-depth 1 --type d --hidden | fzf)
 fi
 
 if [[ -z $selected ]]; then
-    exit 0
+	exit 0
 fi
 
 # tidy up that session name a bit
@@ -15,21 +20,21 @@ selected_name=$(basename "$selected" | tr . _ | tr [:space:] _)
 
 tmux_running=$(pgrep tmux)
 if [[ -z $tmux_running ]]; then
-    # tmux is not running, create a new attached session
-    tmux new-session -s "$selected_name" -c "$selected"
-    exit 0
+	# tmux is not running, create a new attached session
+	tmux new-session -s "$selected_name" -c "$selected"
+	exit 0
 fi
 
-if ! tmux has-session -t="$selected_name" 2> /dev/null; then
-    # tmux is running but the session does not exist, so first create a detached session
-    tmux new-session -ds "$selected_name" -c "$selected"
+if ! tmux has-session -t="$selected_name" 2>/dev/null; then
+	# tmux is running but the session does not exist, so first create a detached session
+	tmux new-session -ds "$selected_name" -c "$selected"
 fi
 
 # at this point tmux is running and a session exists, so either attach or switch client
 if [[ -z $TMUX ]]; then
-    # tmux is not attached, so attach to the session
-    tmux attach -t "$selected_name"
-    exit 0
+	# tmux is not attached, so attach to the session
+	tmux attach -t "$selected_name"
+	exit 0
 fi
 
 # tmux is attached, so just switch client (does nothing if already in the correct session)

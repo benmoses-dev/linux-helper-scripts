@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 if [[ -z $(command -v fzf) ]]; then
-    echo "ensure fzf is installed..."
-    exit 0
+	echo "ensure fzf is installed..."
+	exit 0
 fi
 
 selected=$(find /home/user/GitProjects -mindepth 1 -maxdepth 1 -type d | fzf)
@@ -11,13 +11,13 @@ selected=$(find /home/user/GitProjects -mindepth 1 -maxdepth 1 -type d | fzf)
 selected=$(basename -z "${selected}" | tr -d '/' | xargs)
 
 if [[ -z "$selected" ]]; then
-    echo "no project selected"
-    exit 0
+	echo "no project selected"
+	exit 0
 fi
 
 if [[ ! -d "/var/www/${selected}" ]]; then
-    echo "target directory /var/www/${selected} does not exist, please create it first"
-    exit 0
+	echo "target directory /var/www/${selected} does not exist, please create it first"
+	exit 0
 fi
 
 # Sync the files from the home project folder to the nginx document root
@@ -37,4 +37,3 @@ chown -R www-data:www-data "/var/www/${selected}"
 echo "changed ownership of /var/www/${selected} to www-data:www-data"
 
 echo "done."
-

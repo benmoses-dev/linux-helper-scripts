@@ -16,17 +16,17 @@ print() {
 	fi
 }
 
-if [[ -z $(command -v curl) ]]; then
+if [[ -z $(command -v curl) ]] || [[ -z $(command -v wget) ]]; then
 	print "${COLOR_RED}"
-	print "Starship not installed..."
-	print "Please install curl before running this script!"
+	print "Starship has not been installed..."
+	print "Please install curl and wget before running this script!"
 	print "${COLOR_RESET}"
 	exit 0
 fi
 
 if [[ -n $(command -v starship) ]]; then
 	print "${COLOR_RED}"
-	print "Starship already installed!"
+	print "Starship is already installed!"
 	print "${COLOR_RESET}"
 else
 	mkdir -p "${HOME}/.local/bin"

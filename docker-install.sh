@@ -18,7 +18,7 @@ print() {
 
 if [[ "$EUID" -ne 0 ]]; then
 	print "${COLOR_RED}"
-	print "Docker not installed..."
+	print "Docker has not been installed..."
 	print "Please run this script as root!"
 	print "${COLOR_RESET}"
 	exit 0
@@ -26,24 +26,23 @@ fi
 
 if [[ -n $(command -v docker) ]]; then
 	print "${COLOR_RED}"
-	print "Docker already installed!"
+	print "Docker is already installed!"
 	print "${COLOR_RESET}"
-	exit 0
+else
+	print "${COLOR_YELLOW}"
+	print "Installing docker..."
+	print "${COLOR_RESET}"
+	apt update && apt install curl gnupg -y
+	mkdir -m 0755 -p /etc/apt/keyrings
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+	echo \
+		"deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+        "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" |
+		tee /etc/apt/sources.list.d/docker.list >/dev/null
+	chmod a+r /etc/apt/keyrings/docker.gpg
+	apt update && apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
+	print "${COLOR_GREEN}"
+	print "Docker Installed Successfully!"
+	print "${COLOR_RESET}"
 fi
-
-print "${COLOR_YELLOW}"
-print "Installing docker..."
-print "${COLOR_RESET}"
-apt update && apt install curl gnupg -y
-mkdir -m 0755 -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-echo \
-	"deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" |
-	tee /etc/apt/sources.list.d/docker.list >/dev/null
-chmod a+r /etc/apt/keyrings/docker.gpg
-apt update && apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-
-print "${COLOR_GREEN}"
-print "Docker Installed Successfully!"
-print "${COLOR_RESET}"

@@ -18,13 +18,13 @@ print() {
 
 if [[ -z $(command -v php) ]]; then
 	print "${COLOR_RED}"
-	print "Composer not installed..."
+	print "Composer has not been installed..."
 	print "Please install php before running this script!"
 	print "${COLOR_RESET}"
 else
     if [[ -n $(command -v composer) ]]; then
         print "${COLOR_RED}"
-        print "Composer already installed!"
+        print "Composer is already installed!"
         print "${COLOR_RESET}"
     else
         mkdir -p "${HOME}/.local/bin"

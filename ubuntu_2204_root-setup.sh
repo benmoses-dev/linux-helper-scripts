@@ -37,7 +37,7 @@ print "${COLOR_RESET}"
 apt install inetutils-traceroute net-tools curl gnupg git build-essential openjdk-17-jdk tmux python3-dev python3-pip python3-venv -y
 apt install vim shellcheck ripgrep fd-find xclip trash-cli multitail tree jq rsync fzf libfuse2 -y
 apt install neofetch htop cmatrix lolcat sl -y
-apt install apt-transport-https ca-certificates -y
+apt install apt-transport-https ca-certificates wget -y
 apt install mariadb-server nginx -y
 apt install php php-fpm php-cli php-mysql php-zip php-gd php-mbstring php-curl php-xml php-bcmath php-xdebug -y
 
@@ -85,7 +85,8 @@ sed -i 's/#server_tokens/server_tokens/g' /etc/nginx/nginx.conf
 
 systemctl restart nginx.service
 
-# call docker install here
+# install docker
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/docker-install.sh | bash
 
 print "${COLOR_GREEN}"
 print "Software Installed Successfully!"

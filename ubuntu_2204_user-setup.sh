@@ -16,9 +16,9 @@ print() {
 	fi
 }
 
-if [[ -z $(command -v curl) ]]; then
+if [[ -z $(command -v curl) ]] || [[ -z $(command -v wget) ]]; then
 	print "${COLOR_RED}"
-	print "Please install curl before running this script!"
+	print "Please install curl and wget before running this script!"
 	print "${COLOR_RESET}"
 	exit 0
 fi
@@ -47,8 +47,11 @@ print "${COLOR_RESET}"
 
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-# call nvm install here
-# call composer install here
+# install nvm, node, and npm
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/nvm-install.sh | bash
+
+# install composer
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/composer-install.sh | bash
 
 print "${COLOR_YELLOW}"
 print "Configuring tmux"
@@ -82,8 +85,10 @@ else
     if [[ ! -d "${HOME}/.config/nvim" ]]; then
 	    git clone https://github.com/benmoses-dev/my-neovim.git "${HOME}/.config/nvim"
     fi
-    npm install -g neovim
-    npm install -g tree-sitter-cli
+    if [[ -n $(command -v npm) ]]; then
+        npm install -g neovim
+        npm install -g tree-sitter-cli
+    fi
 
     print "${COLOR_GREEN}"
     print "Neovim installed successfully!"
@@ -92,7 +97,8 @@ else
     print "${COLOR_RESET}"
 fi
 
-# call starship install here
+# install starship
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/starship-install.sh | bash
 
 print "${COLOR_GREEN}"
 print "User software installed successfully!"

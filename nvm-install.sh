@@ -18,7 +18,7 @@ print() {
 
 if [[ -z $(command -v curl) ]]; then
 	print "${COLOR_RED}"
-	print "NVM not installed..."
+	print "NVM has not been installed..."
 	print "Please install curl before running this script!"
 	print "${COLOR_RESET}"
     exit 0

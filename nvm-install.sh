@@ -21,12 +21,13 @@ if [[ -z $(command -v curl) ]]; then
 	print "NVM has not been installed..."
 	print "Please install curl before running this script!"
 	print "${COLOR_RESET}"
-    exit 0
+	exit 0
 fi
 
 print "${COLOR_YELLOW}"
 print "Installing nvm, node, and npm"
 print "${COLOR_RESET}"
+sleep 1
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 sleep 1
@@ -40,3 +41,4 @@ nvm install --lts
 print "${COLOR_GREEN}"
 print "nvm, node and npm installed successfully!"
 print "${COLOR_RESET}"
+sleep 1

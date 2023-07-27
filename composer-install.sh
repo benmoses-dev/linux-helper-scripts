@@ -21,35 +21,40 @@ if [[ -z $(command -v php) ]]; then
 	print "Composer has not been installed..."
 	print "Please install php before running this script!"
 	print "${COLOR_RESET}"
+	sleep 1
 else
-    if [[ -n $(command -v composer) ]]; then
-        print "${COLOR_RED}"
-        print "Composer is already installed!"
-        print "${COLOR_RESET}"
-    else
-        mkdir -p "${HOME}/.local/bin"
+	if [[ -n $(command -v composer) ]]; then
+		print "${COLOR_RED}"
+		print "Composer is already installed!"
+		print "${COLOR_RESET}"
+		sleep 1
+	else
+		mkdir -p "${HOME}/.local/bin"
 
-        print "${COLOR_YELLOW}"
-        print "Installing composer"
-        print "${COLOR_RESET}"
+		print "${COLOR_YELLOW}"
+		print "Installing composer"
+		print "${COLOR_RESET}"
+		sleep 1
 
-        EXPECTED_CHECKSUM="$(php -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')"
-        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-        ACTUAL_CHECKSUM="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"
-        if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
-            echo >&2 'ERROR: Invalid installer checksum'
-            rm composer-setup.php
-        else
-            php composer-setup.php --quiet
-            RESULT=$?
-            rm composer-setup.php
-            echo $RESULT
-        fi
+		EXPECTED_CHECKSUM="$(php -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')"
+		php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+		ACTUAL_CHECKSUM="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"
+		if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
+			echo >&2 'ERROR: Invalid installer checksum'
+			rm composer-setup.php
+		else
+			php composer-setup.php --quiet
+			RESULT="$?"
+			rm composer-setup.php
+			echo "Return code: ${RESULT}"
+			sleep 1
+		fi
 
-        mv composer.phar "${HOME}/.local/bin/composer"
+		mv composer.phar "${HOME}/.local/bin/composer"
 
-        print "${COLOR_GREEN}"
-        print "Composer Installed Successfully!"
-        print "${COLOR_RESET}"
-    fi
+		print "${COLOR_GREEN}"
+		print "Composer Installed Successfully!"
+		print "${COLOR_RESET}"
+		sleep 1
+	fi
 fi

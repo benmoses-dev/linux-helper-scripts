@@ -38,30 +38,36 @@ showLogo() {
 }
 
 showLogo
+sleep 1
 
 # install system software
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_root-setup.sh | bash
+wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_root-setup.sh | bash
 
 apt update && apt install vlc -y
 
 if [[ -n $(command -v syncthing) ]]; then
-    print "${COLOR_RED}"
+	print "${COLOR_RED}"
 	print "Syncthing is already installed!"
 	print "${COLOR_RESET}"
+	sleep 1
 else
-    print "${COLOR_YELLOW}"
-    print "Installing Syncthing"
-    print "${COLOR_RESET}"
-    curl -o /usr/share/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg
-    echo "deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable" | tee /etc/apt/sources.list.d/syncthing.list
-    printf "Package: *\nPin: origin apt.syncthing.net\nPin-Priority: 990\n" | tee /etc/apt/preferences.d/syncthing
-    apt update && apt install syncthing -y
+	print "${COLOR_YELLOW}"
+	print "Installing Syncthing"
+	print "${COLOR_RESET}"
+	sleep 1
 
-    print "${COLOR_GREEN}"
-    print "Syncthing Installed Successfully!"
-    print "${COLOR_RESET}"
+	curl -o /usr/share/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg
+	echo "deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable" | tee /etc/apt/sources.list.d/syncthing.list
+	printf "Package: *\nPin: origin apt.syncthing.net\nPin-Priority: 990\n" | tee /etc/apt/preferences.d/syncthing
+	apt update && apt install syncthing -y
+
+	print "${COLOR_GREEN}"
+	print "Syncthing Installed Successfully!"
+	print "${COLOR_RESET}"
+	sleep 1
 fi
 
 print "${COLOR_GREEN}"
 print "All Software Installed Successfully!"
 print "${COLOR_RESET}"
+sleep 1

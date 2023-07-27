@@ -26,6 +26,8 @@ fi
 print "${COLOR_YELLOW}"
 print "Updating System..."
 print "${COLOR_RESET}"
+sleep 1
+
 apt update && apt upgrade -y
 snap refresh
 apt autoremove -y
@@ -33,6 +35,7 @@ apt autoremove -y
 print "${COLOR_YELLOW}"
 print "Installing Software..."
 print "${COLOR_RESET}"
+sleep 1
 
 apt install inetutils-traceroute net-tools curl gnupg git build-essential openjdk-17-jdk tmux python3-dev python3-pip python3-venv -y
 apt install vim shellcheck ripgrep fd-find xclip trash-cli multitail tree jq rsync fzf libfuse2 -y
@@ -86,8 +89,9 @@ sed -i 's/#server_tokens/server_tokens/g' /etc/nginx/nginx.conf
 systemctl restart nginx.service
 
 # install docker
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/docker-install.sh | bash
+wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/docker-install.sh | bash
 
 print "${COLOR_GREEN}"
 print "Software Installed Successfully!"
 print "${COLOR_RESET}"
+sleep 1

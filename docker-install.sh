@@ -28,10 +28,12 @@ if [[ -n $(command -v docker) ]]; then
 	print "${COLOR_RED}"
 	print "Docker is already installed!"
 	print "${COLOR_RESET}"
+	sleep 1
 else
 	print "${COLOR_YELLOW}"
 	print "Installing docker..."
 	print "${COLOR_RESET}"
+	sleep 1
 	apt update && apt install curl gnupg -y
 	mkdir -m 0755 -p /etc/apt/keyrings
 	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
@@ -45,4 +47,5 @@ else
 	print "${COLOR_GREEN}"
 	print "Docker Installed Successfully!"
 	print "${COLOR_RESET}"
+	sleep 1
 fi

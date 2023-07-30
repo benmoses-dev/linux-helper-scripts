@@ -21,11 +21,12 @@ alias lr='ls -lRh' # recursive ls
 alias lt='ls -ltrh' # sort by date
 alias lm='ls -alh |more' # pipe through 'more'
 alias lw='ls -xAh' # wide listing format
-alias ll='ls -alFhp' # long listing format
+alias ll='ls -AlFhp --group-directories-first' # long listing format
 alias labc='ls -lap' #alphabetical sort
 alias lf="ls -l | egrep -v '^d'" # files only
 alias ldir="ls -l | egrep '^d'" # directories only
 alias l='ls -CF'
+alias le='exa -laFghm --group-directories-first --icons'
 
 # add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert

@@ -39,8 +39,8 @@ sleep 1
 
 apt install inetutils-traceroute net-tools curl gnupg git build-essential openjdk-17-jdk tmux python3-dev python3-pip python3-venv -y
 apt install vim shellcheck ripgrep fd-find xclip trash-cli multitail tree jq rsync fzf libfuse2 -y
-apt install neofetch htop cmatrix lolcat sl -y
-apt install apt-transport-https ca-certificates wget -y
+apt install neofetch htop cmatrix lolcat sl batcat duf hyperfine hexyl -y
+apt install apt-transport-https ca-certificates wget httpie -y
 apt install mariadb-server nginx -y
 apt install php php-fpm php-cli php-mysql php-zip php-gd php-mbstring php-curl php-xml php-bcmath php-xdebug -y
 

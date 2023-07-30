@@ -51,6 +51,10 @@ alias less='less -R'
 alias multitail='multitail --no-repeat -c'
 alias vi='nvim'
 alias vim='nvim'
+alias bat='batcat'
+alias fd='fdfind'
+alias _copy='xclip -selection clipboard -i'
+alias _paste='xclip -selection clipboard -o'
 
 # cd into the old directory
 alias bd='cd "$OLDPWD"'
@@ -65,16 +69,14 @@ alias .....='cd ../../../..'
 alias checkcommand="type -t"
 
 # aliases to show disk space and space used in a folder
-alias diskspace="du -S | sort -n -r |more"
 alias folders='du -h --max-depth=1'
-alias folderssort='find . -maxdepth 1 -type d -print0 | xargs -0 du -sk | sort -rn'
 alias tree='tree -CAhF --dirsfirst'
 alias treed='tree -CAFd'
 alias mountedinfo='df -hT'
 
 # fuzzy-find under the current directory and open the file or directory in neovim
 # useful for quickly finding and editing stand-alone files such as configs
-alias fvi='fzf --exact --print0 | xargs -0 -o nvim'
+alias fvi='fzf --print0 | xargs -0 -o nvim'
 
 # alias for tmux sessionizer
 # find all directories as configured in ~/.local/bin/tmux-sessionizer
@@ -115,7 +117,6 @@ extract () {
 }
 
 # searches for text in all files in the current folder
-# Todo: rewrite using ripgrep
 ftext ()
 {
 	# -i case-insensitive
@@ -126,6 +127,8 @@ ftext ()
 	# optional: -F treat search term as a literal, not a regular expression
 	# optional: -l only print filenames and not the matching lines ex. grep -irl "$1" *
 	grep -iIHrn --color=always "$1" . | less -r
+
+    # or just use ripgrep, if it's installed
 }
 
 function artisan() {

@@ -8,6 +8,11 @@ case $- in
       *) return;;
 esac
 
+if [[ -n $(command -v tmux) ]] && [[ -n "$PS1" ]] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [[ -z "$TMUX" ]]; then
+    session_name=$(basename "${HOME}" | tr . _ | tr [:space:] _)
+    exec tmux new -A -s "$session_name" -c "${HOME}"
+fi
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -98,4 +103,3 @@ fi
 export EDITOR=nvim
 export FZF_DEFAULT_COMMAND="fdfind --hidden --no-ignore --exclude **/.git/*"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-

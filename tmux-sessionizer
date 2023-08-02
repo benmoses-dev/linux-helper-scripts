@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
 
-if [[ -z $(command -v fdfind) ]] || [[ -z $(command -v fzf) ]]; then
-	echo "Please install fdfind and fzf!"
+if [[ -z $(command -v tmux) ]]; then
+	echo "Please install tmux first"
 	exit 0
 fi
 
 if [[ $# -eq 1 ]]; then
 	selected=$1
 else
+	if [[ -z $(command -v fdfind) ]] || [[ -z $(command -v fzf) ]]; then
+		echo "Please install fd and fzf!"
+		exit 0
+	fi
 	selected=$(fdfind . ~/GitProjects ~/ --exact-depth 1 --type d --hidden | fzf)
 fi
 
-if [[ -z $selected ]]; then
+if [[ -z $selected ]] || [[ ! -d "$selected" ]]; then
+	echo "The selected directory is invalid"
 	exit 0
 fi
 

@@ -42,7 +42,7 @@ wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-sc
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.profile >"${HOME}/.profile"
 
 echo 'export EDITOR=nvim' >>"${HOME}/.bashrc"
-echo 'export FZF_DEFAULT_COMMAND="fdfind --hidden"' >>"${HOME}/.bashrc"
+echo 'export FZF_DEFAULT_COMMAND="fdfind --hidden --no-ignore --exclude **/.git/*"' >>"${HOME}/.bashrc"
 echo 'export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"' >>"${HOME}/.bashrc"
 
 print "${COLOR_YELLOW}"

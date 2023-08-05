@@ -74,6 +74,7 @@ sleep 1
 
 # legacy vim config
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.vimrc >"${HOME}/.vimrc"
+wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.ideavimrc >"${HOME}/.ideavimrc"
 
 # neovim setup
 if [[ -n $(command -v nvim) ]]; then

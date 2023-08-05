@@ -41,7 +41,7 @@ apt install gnupg git build-essential openjdk-17-jdk python3-dev python3-pip pyt
 apt install vim shellcheck tmux ripgrep fd-find xclip trash-cli multitail tree jq rsync fzf libfuse2 -y
 apt install apt-transport-https ca-certificates inetutils-traceroute net-tools curl wget httpie -y
 apt install neofetch htop cmatrix lolcat sl bat duf hyperfine hexyl exa -y
-apt install mariadb-server nginx -y
+apt install mariadb-server nginx software-properties-common -y
 apt install php php-fpm php-cli php-imagick php-intl php-redis php-yaml php-zip -y
 apt install php-imap php-mysql php-gd php-mbstring php-curl php-xml php-bcmath php-xdebug -y
 

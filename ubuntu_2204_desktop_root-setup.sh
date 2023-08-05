@@ -43,7 +43,7 @@ sleep 1
 # install system software
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_root-setup.sh | bash
 
-apt update && apt install vlc -y
+apt update && apt install vlc filezilla gnome-tweaks libreoffice libreoffice-help-en-gb virt-manager -y
 
 if [[ -n $(command -v syncthing) ]]; then
 	print "${COLOR_RED}"

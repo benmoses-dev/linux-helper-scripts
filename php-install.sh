@@ -34,11 +34,16 @@ apt update && apt upgrade -y
 print "${COLOR_YELLOW}"
 print "Installing PHP versions 8.0, 8.1 and 8.2, including all useful extensions"
 print "${COLOR_RESET}"
-apt install php8.1 php8.1-fpm php8.1-cli php8.1-imagick php8.1-intl php8.1-redis php8.1-yaml php8.1-zip -y
-apt install php8.1-imap php8.1-mysql php8.1-gd php8.1-mbstring php8.1-curl php8.1-xml php8.1-bcmath php8.1-xdebug -y
 
 apt install php8.0 php8.0-fpm php8.0-mysql php8.0-xml -y
+# wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/xdebug3.ini >"/etc/php/8.0/mods-available/xdebug.ini"
+
+apt install php8.1 php8.1-fpm php8.1-cli php8.1-imagick php8.1-intl php8.1-redis php8.1-yaml php8.1-zip -y
+apt install php8.1-imap php8.1-mysql php8.1-gd php8.1-mbstring php8.1-curl php8.1-xml php8.1-bcmath php8.1-xdebug -y
+# wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/xdebug3.ini >"/etc/php/8.1/mods-available/xdebug.ini"
+
 apt install php8.2 php8.2-fpm php8.2-mysql php8.2-xml -y
+# wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/xdebug3.ini >"/etc/php/8.2/mods-available/xdebug.ini"
 
 print "${COLOR_GREEN}"
 print "Installation complete"

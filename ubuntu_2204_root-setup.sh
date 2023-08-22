@@ -42,51 +42,9 @@ apt install vim shellcheck tmux ripgrep fd-find xclip trash-cli multitail tree j
 apt install apt-transport-https ca-certificates inetutils-traceroute net-tools curl wget httpie -y
 apt install neofetch htop cmatrix lolcat sl bat duf hyperfine hexyl exa -y
 apt install mariadb-server nginx software-properties-common -y
-apt install php php-fpm php-cli php-imagick php-intl php-redis php-yaml php-zip -y
-apt install php-imap php-mysql php-gd php-mbstring php-curl php-xml php-bcmath php-xdebug -y
 
-systemctl enable --now php8.1-fpm.service
 systemctl enable --now nginx.service
-
-cat <<'EOL' >/etc/nginx/sites-available/default
-server {
-    listen       80;
-    server_name  example.com;
-    root         /var/www/html;
-
-    access_log /var/log/nginx/example.com-access.log;
-    error_log  /var/log/nginx/example.com-error.log error;
-    index index.html index.htm index.php;
-
-    add_header X-Frame-Options "SAMEORIGIN";
-    add_header X-Content-Type-Options "nosniff";
-
-    charset utf-8;
-
-    location / {
-        try_files $uri $uri/ /index.php$is_args$args;
-    }
-
-    location = /favicon.ico { access_log off; log_not_found off; }
-    location = /robots.txt  { access_log off; log_not_found off; }
-
-    error_page 404 /index.php;
-
-    location ~ \.php$ {
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass unix:/run/php/php8.1-fpm.sock;
-        fastcgi_index index.php;
-        include fastcgi.conf;
-    }
-
-    location ~ /\.(?!well-known).* {
-        deny all;
-    }
-}
-EOL
-
 sed -i 's/#server_tokens/server_tokens/g' /etc/nginx/nginx.conf
-
 systemctl restart nginx.service
 
 # install docker

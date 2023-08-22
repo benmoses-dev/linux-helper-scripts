@@ -1,10 +1,18 @@
 set number
 set relativenumber
 
-set updatetime=50
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab=true
+set smartindent=true
+set wrap=false
+
+set updatetime=300
 set scrolloff=8
 
 " Do incremental searching.
+set hlsearch=false
 set incsearch
 
 let mapleader=" "

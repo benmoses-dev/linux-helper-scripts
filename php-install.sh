@@ -58,7 +58,7 @@ apt install php8.2 php8.2-fpm php8.2-cli php8.2-imagick php8.2-intl php8.2-redis
 apt install php8.2-imap php8.2-mysql php8.2-gd php8.2-mbstring php8.2-curl php8.2-xml php8.2-bcmath php8.2-xdebug -y
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/xdebug3.ini >"/etc/php/8.2/mods-available/xdebug.ini"
 
-cat << EOL >> "{HOME}/.bash_aliases"
+cat << 'EOL' >> "{HOME}/.bash_aliases"
 function artisan() {
     php artisan "$@"
 }

@@ -58,20 +58,6 @@ apt install php8.2 php8.2-fpm php8.2-cli php8.2-imagick php8.2-intl php8.2-redis
 apt install php8.2-imap php8.2-mysql php8.2-gd php8.2-mbstring php8.2-curl php8.2-xml php8.2-bcmath php8.2-xdebug -y
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/xdebug3.ini >"/etc/php/8.2/mods-available/xdebug.ini"
 
-cat << 'EOL' >> "{HOME}/.bash_aliases"
-function artisan() {
-    php artisan "$@"
-}
-alias art=artisan
-alias xoff='sudo phpdismod -s cli xdebug'
-alias xon='sudo phpenmod -s cli xdebug'
-alias php73='sudo update-alternatives --set php /usr/bin/php7.3'
-alias php74='sudo update-alternatives --set php /usr/bin/php7.4'
-alias php80='sudo update-alternatives --set php /usr/bin/php8.0'
-alias php81='sudo update-alternatives --set php /usr/bin/php8.1'
-alias php82='sudo update-alternatives --set php /usr/bin/php8.2'
-EOL
-
 print "${COLOR_GREEN}"
 print "Installation complete"
 print "${COLOR_RESET}"

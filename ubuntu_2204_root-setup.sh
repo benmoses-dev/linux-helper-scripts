@@ -50,6 +50,9 @@ systemctl restart nginx.service
 # install docker
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/docker-install.sh | bash
 
+# install php
+wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/php-install.sh | bash
+
 print "${COLOR_GREEN}"
 print "Software Installed Successfully!"
 print "${COLOR_RESET}"

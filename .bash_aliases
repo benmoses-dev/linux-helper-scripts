@@ -38,9 +38,9 @@ fm-open () {
 }
 
 # change to windows home dir in wsl
-#chwindows() {
-    #cd /mnt/c/Users/
-#}
+chwindows() {
+    cd /mnt/c/Users || exit
+}
 
 alias cp='cp -i'
 alias mv='mv -i'
@@ -135,8 +135,11 @@ ftext ()
 function artisan() {
     php artisan "$@"
 }
-
 alias art=artisan
 alias xoff='sudo phpdismod -s cli xdebug'
 alias xon='sudo phpenmod -s cli xdebug'
-
+alias php73='sudo update-alternatives --set php /usr/bin/php7.3'
+alias php74='sudo update-alternatives --set php /usr/bin/php7.4'
+alias php80='sudo update-alternatives --set php /usr/bin/php8.0'
+alias php81='sudo update-alternatives --set php /usr/bin/php8.1'
+alias php82='sudo update-alternatives --set php /usr/bin/php8.2'

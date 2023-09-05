@@ -38,36 +38,47 @@ showLogo() {
 }
 
 showLogo
-sleep 1
+sleep 3
 
 # install system software
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_root-setup.sh | bash
 
+print "${COLOR_YELLOW}"
+print "Installing Desktop Software"
+print "${COLOR_RESET}"
+sleep 2
 apt update && apt install vlc filezilla gnome-tweaks libreoffice libreoffice-help-en-gb virt-manager -y
 
 if [[ -n $(command -v syncthing) ]]; then
 	print "${COLOR_RED}"
 	print "Syncthing is already installed!"
 	print "${COLOR_RESET}"
-	sleep 1
+	sleep 2
 else
 	print "${COLOR_YELLOW}"
 	print "Installing Syncthing"
 	print "${COLOR_RESET}"
-	sleep 1
+	sleep 2
 
 	curl -o /usr/share/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg
 	echo "deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable" | tee /etc/apt/sources.list.d/syncthing.list
 	printf "Package: *\nPin: origin apt.syncthing.net\nPin-Priority: 990\n" | tee /etc/apt/preferences.d/syncthing
 	apt update && apt install syncthing -y
 
-	print "${COLOR_GREEN}"
-	print "Syncthing Installed Successfully!"
-	print "${COLOR_RESET}"
-	sleep 1
+    if [[ -n $(command -v syncthing) ]]; then
+        print "${COLOR_GREEN}"
+        print "Syncthing Installed Successfully!"
+        print "${COLOR_RESET}"
+        sleep 2
+    else
+        print "${COLOR_RED}"
+        print "Syncthing Not Found On Path!"
+        print "${COLOR_RESET}"
+        sleep 2
+    fi
 fi
 
 print "${COLOR_GREEN}"
-print "All Software Installed Successfully!"
+print "Desktop Software Install Finished!"
 print "${COLOR_RESET}"
-sleep 1
+sleep 2

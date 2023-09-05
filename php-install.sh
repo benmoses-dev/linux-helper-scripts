@@ -21,6 +21,7 @@ if [[ "$EUID" -ne 0 ]]; then
 	print "PHP versions have not been installed..."
 	print "Please run this script as root!"
 	print "${COLOR_RESET}"
+    sleep 2
 	exit 0
 fi
 
@@ -28,6 +29,7 @@ if [[ -z $(find /etc/apt -type f -iname "ondrej-ubuntu-php*") ]]; then
 	print "${COLOR_YELLOW}"
 	print "Adding ondrej/php ppa to the system repositories"
 	print "${COLOR_RESET}"
+    sleep 2
 	apt update && apt install software-properties-common -y
 	add-apt-repository ppa:ondrej/php
 fi
@@ -37,6 +39,7 @@ apt update && apt upgrade -y
 print "${COLOR_YELLOW}"
 print "Installing PHP versions 7.3, 7.4, 8.0, 8.1 and 8.2, including all useful extensions"
 print "${COLOR_RESET}"
+sleep 2
 
 apt install php7.3 php7.3-fpm php7.3-cli php7.3-imagick php7.3-intl php7.3-redis php7.3-yaml php7.3-zip php7.3-gnupg -y
 apt install php7.3-imap php7.3-mysql php7.3-gd php7.3-mbstring php7.3-curl php7.3-xml php7.3-bcmath php7.3-xdebug -y
@@ -59,5 +62,6 @@ apt install php8.2-imap php8.2-mysql php8.2-gd php8.2-mbstring php8.2-curl php8.
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/xdebug3.ini >"/etc/php/8.2/mods-available/xdebug.ini"
 
 print "${COLOR_GREEN}"
-print "Installation complete"
+print "PHP Installation complete"
 print "${COLOR_RESET}"
+sleep 2

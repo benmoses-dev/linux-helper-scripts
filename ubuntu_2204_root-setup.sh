@@ -26,16 +26,16 @@ fi
 print "${COLOR_YELLOW}"
 print "Updating System..."
 print "${COLOR_RESET}"
-sleep 1
+sleep 2
 
 apt update && apt upgrade -y
 snap refresh
 apt autoremove -y
 
 print "${COLOR_YELLOW}"
-print "Installing Software..."
+print "Installing System Software"
 print "${COLOR_RESET}"
-sleep 1
+sleep 2
 
 apt install gnupg git build-essential openjdk-17-jdk python3-dev python3-pip python3-venv mesa-utils-bin -y
 apt install vim shellcheck tmux ripgrep fd-find xclip trash-cli multitail tree jq rsync fzf libfuse2 -y
@@ -50,10 +50,24 @@ systemctl restart nginx.service
 # install docker
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/docker-install.sh | bash
 
+if [[ -z $(command -v docker) ]]; then
+    print "${COLOR_RED}"
+    print "Docker Not Installed!"
+    print "${COLOR_RESET}"
+    sleep 2
+fi
+
 # install php
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/php-install.sh | bash
 
+if [[ -z $(command -v php) ]]; then
+    print "${COLOR_RED}"
+    print "PHP Not Installed!"
+    print "${COLOR_RESET}"
+    sleep 2
+fi
+
 print "${COLOR_GREEN}"
-print "Software Installed Successfully!"
+print "System Software Install Finished!"
 print "${COLOR_RESET}"
-sleep 1
+sleep 2

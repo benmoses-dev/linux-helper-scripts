@@ -21,13 +21,14 @@ if [[ -z $(command -v curl) ]]; then
 	print "NVM has not been installed..."
 	print "Please install curl before running this script!"
 	print "${COLOR_RESET}"
+    sleep 2
 	exit 0
 fi
 
 print "${COLOR_YELLOW}"
 print "Installing nvm, node, and npm"
 print "${COLOR_RESET}"
-sleep 1
+sleep 2
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 sleep 1
@@ -38,7 +39,38 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 
 nvm install --lts
 
-print "${COLOR_GREEN}"
-print "nvm, node and npm installed successfully!"
-print "${COLOR_RESET}"
-sleep 1
+if [[ -n $(command -v node) ]]; then
+    print "${COLOR_GREEN}"
+    print "Node Installed Successfully!"
+    print "${COLOR_RESET}"
+    sleep 2
+else
+    print "${COLOR_BLUE}"
+    print "Node Not Found On Path! You may need to log out and then in again..."
+    print "${COLOR_RESET}"
+    sleep 2
+fi
+
+if [[ -n $(command -v npm) ]]; then
+    print "${COLOR_GREEN}"
+    print "NPM Installed Successfully!"
+    print "${COLOR_RESET}"
+    sleep 2
+else
+    print "${COLOR_BLUE}"
+    print "NPM Not Found On Path! You may need to log out and then in again..."
+    print "${COLOR_RESET}"
+    sleep 2
+fi
+
+if [[ -n $(command -v nvm) ]]; then
+    print "${COLOR_GREEN}"
+    print "NVM Installed Successfully!"
+    print "${COLOR_RESET}"
+    sleep 2
+else
+    print "${COLOR_BLUE}"
+    print "NVM Not Found On Path! You may need to log out and then in again..."
+    print "${COLOR_RESET}"
+    sleep 2
+fi

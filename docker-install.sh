@@ -21,6 +21,7 @@ if [[ "$EUID" -ne 0 ]]; then
 	print "Docker has not been installed..."
 	print "Please run this script as root!"
 	print "${COLOR_RESET}"
+    sleep 2
 	exit 0
 fi
 
@@ -28,12 +29,12 @@ if [[ -n $(command -v docker) ]]; then
 	print "${COLOR_RED}"
 	print "Docker is already installed!"
 	print "${COLOR_RESET}"
-	sleep 1
+	sleep 2
 else
 	print "${COLOR_YELLOW}"
 	print "Installing docker..."
 	print "${COLOR_RESET}"
-	sleep 1
+	sleep 2
 	apt update && apt install curl gnupg -y
 	mkdir -m 0755 -p /etc/apt/keyrings
 	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
@@ -44,8 +45,15 @@ else
 	chmod a+r /etc/apt/keyrings/docker.gpg
 	apt update && apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
-	print "${COLOR_GREEN}"
-	print "Docker Installed Successfully!"
-	print "${COLOR_RESET}"
-	sleep 1
+    if [[ -n $(command -v docker) ]]; then
+        print "${COLOR_GREEN}"
+        print "Docker Installed Successfully!"
+        print "${COLOR_RESET}"
+        sleep 2
+    else
+        print "${COLOR_RED}"
+        print "Docker Not Found On Path!"
+        print "${COLOR_RESET}"
+        sleep 2
+    fi
 fi

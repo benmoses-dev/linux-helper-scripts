@@ -5,8 +5,8 @@
 # Usage
 ## Desktop Ubuntu
 ```
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_desktop_root-setup.sh | sudo bash
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_user-setup.sh | bash
+wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_desktop_root-setup.sh | sudo bash
+wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_user-setup.sh | bash
 ```
 ### Alternatively, download the two scripts:
 ```
@@ -21,8 +21,8 @@ sudo ./ubuntu_2204_desktop_root-setup.sh
 ```
 ## Windows Subsystem for Linux (Ubuntu, with systemd enabled) or Ubuntu Server
 ```
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_root-setup.sh | sudo bash
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_user-setup.sh | bash
+wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_root-setup.sh | sudo bash
+wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_user-setup.sh | bash
 ```
 ### Alternatively, download the two scripts:
 ```

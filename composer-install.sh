@@ -21,20 +21,20 @@ if [[ -z $(command -v php) ]]; then
 	print "Composer has not been installed..."
 	print "Please install php before running this script!"
 	print "${COLOR_RESET}"
-	sleep 1
+	sleep 2
 else
 	if [[ -n $(command -v composer) ]]; then
 		print "${COLOR_RED}"
 		print "Composer is already installed!"
 		print "${COLOR_RESET}"
-		sleep 1
+		sleep 2
 	else
 		mkdir -p "${HOME}/.local/bin"
 
 		print "${COLOR_YELLOW}"
 		print "Installing composer"
 		print "${COLOR_RESET}"
-		sleep 1
+		sleep 2
 
 		EXPECTED_CHECKSUM="$(php -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')"
 		php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -47,14 +47,21 @@ else
 			RESULT="$?"
 			rm composer-setup.php
 			echo "Return code: ${RESULT}"
-			sleep 1
+			sleep 2
 		fi
 
 		mv composer.phar "${HOME}/.local/bin/composer"
 
-		print "${COLOR_GREEN}"
-		print "Composer Installed Successfully!"
-		print "${COLOR_RESET}"
-		sleep 1
+        if [[ -n $(command -v composer) || -f "${HOME}/.local/bin/composer" ]]; then
+            print "${COLOR_GREEN}"
+            print "Composer Installed Successfully!"
+            print "${COLOR_RESET}"
+            sleep 2
+        else
+            print "${COLOR_RED}"
+            print "Something went wrong - composer not found!"
+            print "${COLOR_RESET}"
+            sleep 2
+        fi
 	fi
 fi

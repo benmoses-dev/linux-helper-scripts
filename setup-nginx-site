@@ -34,6 +34,24 @@ usage() {
 		"-h, --help" "Display this help message"
 }
 
+error() {
+    print "${COLOR_RED}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+info() {
+    print "${COLOR_YELLOW}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+if [[ "$EUID" -eq 0 ]]; then
+    error "Do not run this script as root"
+    usage
+	exit 1
+fi
+
 # Parse arguments
 while [ "$#" -gt 0 ]; do
 	case "$1" in
@@ -66,7 +84,7 @@ while [ "$#" -gt 0 ]; do
 		shift 1
 		;;
 	*)
-		error "Unknown option: $1"
+        error "Unknown option: $1"
 		usage
 		exit 1
 		;;
@@ -75,13 +93,11 @@ done
 
 if [[ -z $PROJECT_DIR ]]; then
 	if [[ -z $(command -v fzf) ]]; then
-		error "No project given, either provide a project or install fzf..."
+        error "No project given, either provide a project or install fzf..."
 		usage
 		exit 1
 	fi
-	print "${COLOR_YELLOW}"
-	print "No project given, using fuzzy finder..."
-	print "${COLOR_RESET}"
+	info "No project given, using fuzzy finder..."
 	sleep 1
 	PROJECT_DIR=$(find "${HOME}" -mindepth 1 -maxdepth 4 -type d | fzf)
 fi
@@ -110,8 +126,7 @@ PROJECT_NAME=$(echo "${PROJECT_NAME}" | tr " " "-")
 PHP="php${PHPVER}"
 
 if [[ -z $(which "${PHP}") ]]; then
-	print "${COLOR_YELLOW}"
-	print "${PHP} not installed"
+	info "${PHP} not installed"
 	read -rp "Install now? (y/N): " confirm
 
 	if [[ "${confirm}" = [yY] || "${confirm}" = [yY][eE][sS] ]]; then
@@ -121,17 +136,18 @@ if [[ -z $(which "${PHP}") ]]; then
         print "PHP ${PHPVER} installed"
         sleep 1
 	fi
-
-	print "${COLOR_RESET}"
 fi
+
+sudo systemctl enable --now "${PHP}-fpm.service"
+sleep 1
+sudo sed -i "s/www-data/${USER}/g" "/etc/php/${PHPVER}/fpm/pool.d/www.conf"
+sudo systemctl restart "${PHP}-fpm.service"
 
 if [[ "${LARAVEL}" == true ]]; then
 	PUBLIC_DIR="/public"
 fi
 
-print "${COLOR_YELLOW}"
-print "Setting up nginx server block..."
-print "${COLOR_RESET}"
+info "Setting up nginx server block..."
 sleep 1
 
 cat <<EOL | sudo tee "/etc/nginx/sites-available/${PROJECT_NAME}"
@@ -174,30 +190,34 @@ server {
 }
 EOL
 
-print "${COLOR_YELLOW}"
-print "Creating symlinks..."
-print "${COLOR_RESET}"
+info "Creating symlinks..."
 sleep 1
 
 sudo rm -f "/etc/nginx/sites-enabled/${PROJECT_NAME}"
 sudo ln -s "/etc/nginx/sites-available/${PROJECT_NAME}" "/etc/nginx/sites-enabled/${PROJECT_NAME}"
-sudo nginx -t >/dev/null 2>&1
-NGINX_SUCCESS=$?
 
-if [[ $NGINX_SUCCESS -ne 0 ]]; then
-	print "${COLOR_RED}"
-	print "Something went wrong with the nginx configuration"
-	print "Check the configuration file at /etc/nginx/sites-available/${PROJECT_NAME}"
-	print "${COLOR_RESET}"
-	sleep 1
-fi
-
-print "${COLOR_YELLOW}"
-print "Restarting nginx..."
-print "${COLOR_RESET}"
+info "Restarting nginx..."
 sleep 1
 
-sudo systemctl restart nginx.service
+if sudo ss -tupln | grep -q "apache"; then
+    sudo systemctl disable --now apache2
+    sleep 5
+fi
+
+sudo nginx -t >/dev/null 2>&1
+NGINX_SUCCESS=$?
+if [[ $NGINX_SUCCESS -ne 0 ]]; then
+	error "Something went wrong with the nginx configuration"
+	error "Check the configuration file at /etc/nginx/sites-available/${PROJECT_NAME}"
+    exit 1
+fi
+
+if ! sudo ss -tupln | grep -q "nginx"; then
+    sudo systemctl enable --now nginx
+    sleep 5
+fi
+
+sudo systemctl restart nginx
 
 print "${COLOR_GREEN}"
 print "Done! Go to ${PROJECT_NAME}.local to test the site"

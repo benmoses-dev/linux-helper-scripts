@@ -20,6 +20,7 @@ if [[ "$EUID" -ne 0 ]]; then
 	print "${COLOR_RED}"
 	print "Please run this script as root!"
 	print "${COLOR_RESET}"
+    sleep 1
 	exit 0
 fi
 
@@ -38,7 +39,7 @@ showLogo() {
 }
 
 showLogo
-sleep 3
+sleep 2
 
 # install system software
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_root-setup.sh | bash
@@ -53,7 +54,7 @@ if [[ -n $(command -v syncthing) ]]; then
 	print "${COLOR_RED}"
 	print "Syncthing is already installed!"
 	print "${COLOR_RESET}"
-	sleep 2
+	sleep 1
 else
 	print "${COLOR_YELLOW}"
 	print "Installing Syncthing"
@@ -69,16 +70,16 @@ else
         print "${COLOR_GREEN}"
         print "Syncthing Installed Successfully!"
         print "${COLOR_RESET}"
-        sleep 2
+        sleep 1
     else
         print "${COLOR_RED}"
         print "Syncthing Not Found On Path!"
         print "${COLOR_RESET}"
-        sleep 2
+        sleep 1
     fi
 fi
 
 print "${COLOR_GREEN}"
 print "Desktop Software Install Finished!"
 print "${COLOR_RESET}"
-sleep 2
+sleep 1

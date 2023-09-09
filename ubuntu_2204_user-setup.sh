@@ -20,6 +20,7 @@ if [[ -z $(command -v curl) ]] || [[ -z $(command -v wget) ]]; then
 	print "${COLOR_RED}"
 	print "Please install curl and wget before running this script!"
 	print "${COLOR_RESET}"
+    sleep 1
 	exit 0
 fi
 
@@ -27,6 +28,7 @@ if [[ -z $(command -v git) ]]; then
 	print "${COLOR_RED}"
 	print "Please install git before running this script!"
 	print "${COLOR_RESET}"
+    sleep 1
 	exit 0
 fi
 
@@ -81,7 +83,7 @@ if [[ -n $(command -v nvim) ]]; then
 	print "${COLOR_RED}"
 	print "Neovim is already installed!"
 	print "${COLOR_RESET}"
-	sleep 2
+	sleep 1
 else
 	if [[ ! -f "${HOME}/.local/bin/nvim" ]]; then
 		wget --quiet -O "${HOME}/.local/bin/nvim" https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
@@ -113,4 +115,4 @@ wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/ma
 print "${COLOR_GREEN}"
 print "User software installed successfully!"
 print "${COLOR_RESET}"
-sleep 2
+sleep 1

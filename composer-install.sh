@@ -47,7 +47,7 @@ else
 			RESULT="$?"
 			rm composer-setup.php
 			echo "Return code: ${RESULT}"
-			sleep 2
+			sleep 1
 		fi
 
 		mv composer.phar "${HOME}/.local/bin/composer"
@@ -56,7 +56,7 @@ else
             print "${COLOR_GREEN}"
             print "Composer Installed Successfully!"
             print "${COLOR_RESET}"
-            sleep 2
+            sleep 1
         else
             print "${COLOR_RED}"
             print "Something went wrong - composer not found!"

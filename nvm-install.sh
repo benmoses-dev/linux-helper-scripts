@@ -43,34 +43,34 @@ if [[ -n $(command -v node) ]]; then
     print "${COLOR_GREEN}"
     print "Node Installed Successfully!"
     print "${COLOR_RESET}"
-    sleep 2
+    sleep 1
 else
     print "${COLOR_BLUE}"
     print "Node Not Found On Path! You may need to log out and then in again..."
     print "${COLOR_RESET}"
-    sleep 2
+    sleep 1
 fi
 
 if [[ -n $(command -v npm) ]]; then
     print "${COLOR_GREEN}"
     print "NPM Installed Successfully!"
     print "${COLOR_RESET}"
-    sleep 2
+    sleep 1
 else
     print "${COLOR_BLUE}"
     print "NPM Not Found On Path! You may need to log out and then in again..."
     print "${COLOR_RESET}"
-    sleep 2
+    sleep 1
 fi
 
 if [[ -n $(command -v nvm) ]]; then
     print "${COLOR_GREEN}"
     print "NVM Installed Successfully!"
     print "${COLOR_RESET}"
-    sleep 2
+    sleep 1
 else
     print "${COLOR_BLUE}"
     print "NVM Not Found On Path! You may need to log out and then in again..."
     print "${COLOR_RESET}"
-    sleep 2
+    sleep 1
 fi

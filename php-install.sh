@@ -21,7 +21,7 @@ if [[ "$EUID" -ne 0 ]]; then
 	print "PHP versions have not been installed..."
 	print "Please run this script as root!"
 	print "${COLOR_RESET}"
-    sleep 2
+    sleep 1
 	exit 0
 fi
 
@@ -64,4 +64,4 @@ wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-sc
 print "${COLOR_GREEN}"
 print "PHP Installation complete"
 print "${COLOR_RESET}"
-sleep 2
+sleep 1

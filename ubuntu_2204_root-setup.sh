@@ -20,13 +20,14 @@ if [[ "$EUID" -ne 0 ]]; then
 	print "${COLOR_RED}"
 	print "Please run this script as root!"
 	print "${COLOR_RESET}"
+    sleep 1
 	exit 0
 fi
 
 print "${COLOR_YELLOW}"
 print "Updating System..."
 print "${COLOR_RESET}"
-sleep 2
+sleep 1
 
 apt update && apt upgrade -y
 snap refresh
@@ -54,7 +55,7 @@ if [[ -z $(command -v docker) ]]; then
     print "${COLOR_RED}"
     print "Docker Not Installed!"
     print "${COLOR_RESET}"
-    sleep 2
+    sleep 1
 fi
 
 # install php
@@ -64,10 +65,10 @@ if [[ -z $(command -v php) ]]; then
     print "${COLOR_RED}"
     print "PHP Not Installed!"
     print "${COLOR_RESET}"
-    sleep 2
+    sleep 1
 fi
 
 print "${COLOR_GREEN}"
 print "System Software Install Finished!"
 print "${COLOR_RESET}"
-sleep 2
+sleep 1

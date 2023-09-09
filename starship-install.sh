@@ -21,7 +21,7 @@ if [[ -z $(command -v curl) ]] || [[ -z $(command -v wget) ]]; then
 	print "Starship has not been installed..."
 	print "Please install curl and wget before running this script!"
 	print "${COLOR_RESET}"
-    sleep 2
+    sleep 1
 	exit 0
 fi
 
@@ -29,7 +29,7 @@ if [[ -n $(command -v starship) ]]; then
 	print "${COLOR_RED}"
 	print "Starship is already installed!"
 	print "${COLOR_RESET}"
-	sleep 2
+	sleep 1
 else
 	mkdir -p "${HOME}/.local/bin"
 	mkdir -p "${HOME}/.config"
@@ -53,11 +53,11 @@ else
         print "${COLOR_GREEN}"
         print "Starship Installed Successfully!"
         print "${COLOR_RESET}"
-        sleep 2
+        sleep 1
     else
         print "${COLOR_RED}"
         print "Something went wrong - starship not found!"
         print "${COLOR_RESET}"
-        sleep 2
+        sleep 1
     fi
 fi

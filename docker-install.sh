@@ -21,7 +21,7 @@ if [[ "$EUID" -ne 0 ]]; then
 	print "Docker has not been installed..."
 	print "Please run this script as root!"
 	print "${COLOR_RESET}"
-    sleep 2
+    sleep 1
 	exit 0
 fi
 
@@ -29,7 +29,7 @@ if [[ -n $(command -v docker) ]]; then
 	print "${COLOR_RED}"
 	print "Docker is already installed!"
 	print "${COLOR_RESET}"
-	sleep 2
+	sleep 1
 else
 	print "${COLOR_YELLOW}"
 	print "Installing docker..."
@@ -49,11 +49,11 @@ else
         print "${COLOR_GREEN}"
         print "Docker Installed Successfully!"
         print "${COLOR_RESET}"
-        sleep 2
+        sleep 1
     else
         print "${COLOR_RED}"
         print "Docker Not Found On Path!"
         print "${COLOR_RESET}"
-        sleep 2
+        sleep 1
     fi
 fi

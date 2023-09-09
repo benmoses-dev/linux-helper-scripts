@@ -14,128 +14,136 @@ PUBLIC_DIR=""
 PHPVER=8.1
 
 print() {
-	if [[ "${SILENT}" == false ]]; then
+	if [[ "${SILENT}" = false ]]; then
 		echo -e "$@"
 	fi
 }
 
 usage() {
-  printf "%s\n" \
-    "setup-site [option]" \
-    "" \
-    "Create a web server configuration using the given project and php version"
+	printf "%s\n" \
+		"setup-site [option]" \
+		"" \
+		"Create a web server configuration using the given project and php version"
 
-  printf "\n%s\n" "Options"
-  printf "\t%s\n\t\t%s\n\n" \
-    "-s, --silent" "Do not print informational output" \
-    "-l, --laravel" "Designate this as a laravel project - otherwise false" \
-    "-p, --php-version" "Override the default php version [default: ${PHPVER}]" \
-    "-d, --directory" "Provide a project directory" \
-    "-h, --help" "Display this help message"
+	printf "\n%s\n" "Options"
+	printf "\t%s\n\t\t%s\n\n" \
+		"-s, --silent" "Do not print informational output" \
+		"-l, --laravel" "Designate this as a laravel project - otherwise false" \
+		"-p, --php-ver" "Override the default php version [default: ${PHPVER}]" \
+		"-d, --dir" "Provide path to the project root directory" \
+		"-h, --help" "Display this help message"
 }
 
 # Parse arguments
 while [ "$#" -gt 0 ]; do
-  case "$1" in
-  -p | --php-version)
-    PHPVER="$2"
-    shift 2
-    ;;
-  -d | --directory)
-    PROJECT_DIR="$2"
-    shift 2
-    ;;
-  -s | --silent)
-    SILENT=true
-    shift 1
-    ;;
-  -l | --laravel)
-    LARAVEL=true
-    shift 1
-    ;;
-  -h | --help)
-    usage
-    exit
-    ;;
-    -p=* | --php-version=*)
-    PHPVER="${1#*=}"
-    shift 1
-    ;;
-  -d=* | --directory=*)
-    PROJECT_DIR="${1#*=}"
-    shift 1
-    ;;
-    *)
-    error "Unknown option: $1"
-    usage
-    exit 1
-    ;;
-  esac
+	case "$1" in
+	-p | --php-ver)
+		PHPVER="$2"
+		shift 2
+		;;
+	-d | --dir)
+		PROJECT_DIR="$2"
+		shift 2
+		;;
+	-s | --silent)
+		SILENT=true
+		shift 1
+		;;
+	-l | --laravel)
+		LARAVEL=true
+		shift 1
+		;;
+	-h | --help)
+		usage
+		exit
+		;;
+	-p=* | --php-ver=*)
+		PHPVER="${1#*=}"
+		shift 1
+		;;
+	-d=* | --dir=*)
+		PROJECT_DIR="${1#*=}"
+		shift 1
+		;;
+	*)
+		error "Unknown option: $1"
+		usage
+		exit 1
+		;;
+	esac
 done
 
 if [[ -z $PROJECT_DIR ]]; then
-    if [[ -z $(command -v fzf) ]]; then
-        error "No project given, either provide a project or install fzf..."
-        usage
-        exit 1
-    fi
+	if [[ -z $(command -v fzf) ]]; then
+		error "No project given, either provide a project or install fzf..."
+		usage
+		exit 1
+	fi
 	print "${COLOR_YELLOW}"
 	print "No project given, using fuzzy finder..."
 	print "${COLOR_RESET}"
-	sleep 2
-    PROJECT_DIR=$(find "${HOME}" -mindepth 1 -maxdepth 4 -type d | fzf)
+	sleep 1
+	PROJECT_DIR=$(find "${HOME}" -mindepth 1 -maxdepth 4 -type d | fzf)
 fi
 
 if [[ -z "$PROJECT_DIR" ]]; then
 	error "Invalid project directory"
-    usage
+	usage
 	exit 1
 fi
 
-# Get just the final directory name without the path and without any leading or trailing whitespace
-PROJECT=$(basename -z "${PROJECT_DIR}" | tr -d '/' | xargs)
+# Get just the final project directory name without the path and without any leading or trailing whitespace or EOL/null characters
+PROJECT_NAME=$(basename -z "${PROJECT_DIR}" | xargs --null)
 
-if [[ -z "$PROJECT" ]]; then
+if [[ -z "$PROJECT_NAME" ]]; then
 	error "Invalid project name"
-    usage
+	usage
 	exit 1
 fi
+
+# If a relative path is given, convert to a full path
+BASE_PATH=$(dirname -z "${PROJECT_DIR}" | xargs --null)
+BASE_PATH=$(cd "${BASE_PATH}"; pwd)
+PROJECT_DIR="${BASE_PATH}/${PROJECT_NAME}"
+PROJECT_NAME=$(echo "${PROJECT_NAME}" | tr " " "-")
 
 PHP="php${PHPVER}"
 
 if [[ -z $(which "${PHP}") ]]; then
-    print "${COLOR_YELLOW}"
-    print "${PHP} not installed"
-    read -rp "Install now? (Y/N): " confirm
+	print "${COLOR_YELLOW}"
+	print "${PHP} not installed"
+	read -rp "Install now? (y/N): " confirm
 
-    if [[ "${confirm}" = [yY] || "${confirm}" = [yY][eE][sS] ]]; then
-        sudo apt update
-        sudo apt install "${PHP}" -y
-    fi
+	if [[ "${confirm}" = [yY] || "${confirm}" = [yY][eE][sS] ]]; then
+		sudo apt update
+        sudo apt install "${PHP}" "${PHP}-fpm" "${PHP}-cli" "${PHP}-imagick" "${PHP}-intl" "${PHP}-redis" "${PHP}-yaml" "${PHP}-zip" "${PHP}-gnupg" -y
+        sudo apt install "${PHP}-imap" "${PHP}-mysql" "${PHP}-gd" "${PHP}-mbstring" "${PHP}-curl" "${PHP}-xml" "${PHP}-bcmath" "${PHP}-xdebug" "${PHP}-pgsql" -y
+        print "PHP ${PHPVER} installed"
+        sleep 1
+	fi
 
-    print "${COLOR_RESET}"
-    sleep 2
+	print "${COLOR_RESET}"
 fi
 
 if [[ "${LARAVEL}" == true ]]; then
-    PUBLIC_DIR="/public"
+	PUBLIC_DIR="/public"
 fi
 
 print "${COLOR_YELLOW}"
 print "Setting up nginx server block..."
 print "${COLOR_RESET}"
-sleep 2
+sleep 1
 
-cat << EOL | sudo tee "/etc/nginx/sites-available/${PROJECT}"
+cat <<EOL | sudo tee "/etc/nginx/sites-available/${PROJECT_NAME}"
 server {
 	listen 80;
 	listen [::]:80;
 
-	server_name ${PROJECT}.local;
+	server_name ${PROJECT_NAME}.local;
     root ${PROJECT_DIR}${PUBLIC_DIR};
 
-	access_log /var/log/nginx/${PROJECT}-access.log;
-    error_log  /var/log/nginx/${PROJECT}-error.log error;
+	access_log /var/log/nginx/${PROJECT_NAME}-access.log;
+    error_log  /var/log/nginx/${PROJECT_NAME}-error.log error;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
@@ -169,28 +177,29 @@ EOL
 print "${COLOR_YELLOW}"
 print "Creating symlinks..."
 print "${COLOR_RESET}"
-sleep 2
+sleep 1
 
-sudo ln -s "/etc/nginx/sites-available/${PROJECT}" "/etc/nginx/sites-enabled/${PROJECT}"
-sudo nginx -t > /dev/null 2>&1
+sudo rm -f "/etc/nginx/sites-enabled/${PROJECT_NAME}"
+sudo ln -s "/etc/nginx/sites-available/${PROJECT_NAME}" "/etc/nginx/sites-enabled/${PROJECT_NAME}"
+sudo nginx -t >/dev/null 2>&1
 NGINX_SUCCESS=$?
 
 if [[ $NGINX_SUCCESS -ne 0 ]]; then
-    print "${COLOR_RED}"
-    print "Something went wrong with the nginx configuration"
-    print "Check the configuration file at /etc/nginx/sites-available/${PROJECT}"
-    print "${COLOR_RESET}"
-    sleep 2
+	print "${COLOR_RED}"
+	print "Something went wrong with the nginx configuration"
+	print "Check the configuration file at /etc/nginx/sites-available/${PROJECT_NAME}"
+	print "${COLOR_RESET}"
+	sleep 1
 fi
 
 print "${COLOR_YELLOW}"
 print "Restarting nginx..."
 print "${COLOR_RESET}"
-sleep 2
+sleep 1
 
 sudo systemctl restart nginx.service
 
 print "${COLOR_GREEN}"
-print "Done! Go to ${PROJECT}.local to test the site"
+print "Done! Go to ${PROJECT_NAME}.local to test the site"
 print "${COLOR_RESET}"
-sleep 2
+sleep 1

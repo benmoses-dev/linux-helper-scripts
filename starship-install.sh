@@ -44,7 +44,7 @@ else
 	print "Configuring Starship"
 	print "${COLOR_RESET}"
 	sleep 2
-	wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/starship.toml >"${HOME}/.config/starship.toml"
+	wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/starship.toml >"${HOME}/.config/starship.toml"
 
 	echo 'export STARSHIP_CONFIG=$HOME/.config/starship.toml' >>"${HOME}/.bashrc"
 	echo 'eval "$(starship init bash)"' >>"${HOME}/.bashrc"

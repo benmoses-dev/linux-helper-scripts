@@ -1,0 +1,180 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Colours
+COLOR_RED=$(tput setaf 1)
+COLOR_GREEN=$(tput setaf 2)
+COLOR_YELLOW=$(tput setaf 3)
+COLOR_BLUE=$(tput setaf 4)
+COLOR_RESET=$(tput sgr0)
+SILENT=false
+LARAVEL=false
+PUBLIC_DIR=""
+PHPVER=8.1
+
+print() {
+	if [[ "${SILENT}" == false ]]; then
+		echo -e "$@"
+	fi
+}
+
+usage() {
+  printf "%s\n" \
+    "setup-site [option]" \
+    "" \
+    "Create a web server configuration using the given project and php version"
+
+  printf "\n%s\n" "Options"
+  printf "\t%s\n\t\t%s\n\n" \
+    "-s, --silent" "Do not print informational output" \
+    "-l, --laravel" "Designate this as a laravel project - otherwise false" \
+    "-p, --php-version" "Override the default php version [default: ${PHPVER}]" \
+    "-d, --directory" "Provide a project directory" \
+    "-h, --help" "Display this help message"
+}
+
+# Parse arguments
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+  -p | --php-version)
+    PHPVER="$2"
+    shift 2
+    ;;
+  -d | --directory)
+    PROJECT_DIR="$2"
+    shift 2
+    ;;
+  -s | --silent)
+    SILENT=true
+    shift 1
+    ;;
+  -l | --laravel)
+    LARAVEL=true
+    shift 1
+    ;;
+  -h | --help)
+    usage
+    exit
+    ;;
+    -p=* | --php-version=*)
+    PHPVER="${1#*=}"
+    shift 1
+    ;;
+  -d=* | --directory=*)
+    PROJECT_DIR="${1#*=}"
+    shift 1
+    ;;
+    *)
+    error "Unknown option: $1"
+    usage
+    exit 1
+    ;;
+  esac
+done
+
+if [[ -z $PROJECT_DIR ]]; then
+    if [[ -z $(command -v fzf) ]]; then
+        error "No project given, either provide a project or install fzf..."
+        usage
+        exit 1
+    fi
+	print "${COLOR_YELLOW}"
+	print "No project given, using fuzzy finder..."
+	print "${COLOR_RESET}"
+	sleep 2
+    PROJECT_DIR=$(find "${HOME}" -mindepth 1 -maxdepth 4 -type d | fzf)
+fi
+
+if [[ -z "$PROJECT_DIR" ]]; then
+	error "Invalid project directory"
+    usage
+	exit 1
+fi
+
+# Get just the final directory name without the path and without any leading or trailing whitespace
+PROJECT=$(basename -z "${PROJECT_DIR}" | tr -d '/' | xargs)
+
+if [[ -z "$PROJECT" ]]; then
+	error "Invalid project name"
+    usage
+	exit 1
+fi
+
+if [[ "${LARAVEL}" == true ]]; then
+    PUBLIC_DIR="/public"
+fi
+
+print "${COLOR_YELLOW}"
+print "Setting up nginx server block..."
+print "${COLOR_RESET}"
+sleep 2
+
+cat << EOL | sudo tee "/etc/nginx/sites-available/${PROJECT}"
+server {
+	listen 80;
+	listen [::]:80;
+
+	server_name ${PROJECT}.local;
+    root ${PROJECT_DIR}${PUBLIC_DIR};
+
+	access_log /var/log/nginx/${PROJECT}-access.log;
+    error_log  /var/log/nginx/${PROJECT}-error.log error;
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+ 
+    index index.php;
+ 
+    charset utf-8;
+ 
+    location / {
+        try_files \$uri \$uri/ /index.php?\$query_string;
+    }
+ 
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+ 
+    error_page 404 /index.php;
+ 
+    location ~ \.php\$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)\$;
+        fastcgi_pass unix:/run/php/php${PHPVER}-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi.conf;
+    }
+ 
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+EOL
+
+print "${COLOR_YELLOW}"
+print "Creating symlinks..."
+print "${COLOR_RESET}"
+sleep 2
+
+sudo ln -s "/etc/nginx/sites-available/${PROJECT}" "/etc/nginx/sites-enabled/${PROJECT}"
+sudo nginx -t > /dev/null 2>&1
+NGINX_SUCCESS=$?
+
+if [[ $NGINX_SUCCESS -ne 0 ]]; then
+    print "${COLOR_RED}"
+    print "Something went wrong with the nginx configuration"
+    print "Check the configuration file at /etc/nginx/sites-available/${PROJECT}"
+    print "${COLOR_RESET}"
+    sleep 2
+fi
+
+print "${COLOR_YELLOW}"
+print "Restarting nginx..."
+print "${COLOR_RESET}"
+sleep 2
+
+sudo systemctl restart nginx.service
+
+print "${COLOR_GREEN}"
+print "Done! Go to ${PROJECT}.local to test the site"
+print "${COLOR_RESET}"
+sleep 2

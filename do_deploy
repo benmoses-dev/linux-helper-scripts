@@ -20,20 +20,24 @@ if [[ ! -d "/var/www/${selected}" ]]; then
 	exit 0
 fi
 
-# Sync the files from the home project folder to the nginx document root
-rsync -Pcav --delete "/home/user/GitProjects/${selected}/" "/var/www/${selected}/"
-echo "moved ${selected}"
+while :; do
 
-# Make all files readable and writable by user and group
-find "/var/www/${selected}/" -type f -exec chmod 664 {} +
-echo "changed files to 664"
+	# Sync the files from the home project folder to the nginx document root
+	rsync -Pcav --delete "/home/user/GitProjects/${selected}/" "/var/www/${selected}/"
+	echo "moved ${selected}"
 
-# Make all folders navigable by anyone, writable by user and group
-find "/var/www/${selected}/" -type d -exec chmod 775 {} +
-echo "changed folders to 775"
+	# Make all files readable and writable by user and group
+	find "/var/www/${selected}/" -type f -exec chmod 664 {} +
+	echo "changed files to 664"
 
-# Change the ownership back to nginx for serving
-chown -R www-data:www-data "/var/www/${selected}"
-echo "changed ownership of /var/www/${selected} to www-data:www-data"
+	# Make all folders navigable by anyone, writable by user and group
+	find "/var/www/${selected}/" -type d -exec chmod 775 {} +
+	echo "changed folders to 775"
 
-echo "done."
+	# Change the ownership back to nginx for serving
+	chown -R www-data:www-data "/var/www/${selected}"
+	echo "changed ownership of /var/www/${selected} to www-data:www-data"
+
+	echo "done."
+
+done

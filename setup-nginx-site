@@ -101,6 +101,22 @@ if [[ -z "$PROJECT" ]]; then
 	exit 1
 fi
 
+PHP="php${PHPVER}"
+
+if [[ -z $(which "${PHP}") ]]; then
+    print "${COLOR_YELLOW}"
+    print "${PHP} not installed"
+    read -rp "Install now? (Y/N): " confirm
+
+    if [[ "${confirm}" = [yY] || "${confirm}" = [yY][eE][sS] ]]; then
+        sudo apt update
+        sudo apt install "${PHP}" -y
+    fi
+
+    print "${COLOR_RESET}"
+    sleep 2
+fi
+
 if [[ "${LARAVEL}" == true ]]; then
     PUBLIC_DIR="/public"
 fi

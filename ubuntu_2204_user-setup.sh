@@ -61,6 +61,14 @@ wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/ma
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/composer-install.sh | bash
 
 print "${COLOR_YELLOW}"
+print "Installing web server automation script"
+print "${COLOR_RESET}"
+sleep 2
+
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/setup-nginx-site >"${HOME}/.local/bin/setup-site"
+chmod 755 "${HOME}/.local/bin/setup-site"
+
+print "${COLOR_YELLOW}"
 print "Configuring tmux"
 print "${COLOR_RESET}"
 sleep 2

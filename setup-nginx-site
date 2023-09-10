@@ -91,11 +91,32 @@ while [ "$#" -gt 0 ]; do
 	esac
 done
 
+if [[ -z $(command -v nginx) ]]; then
+    info "Nginx not installed"
+    read -rp "Install now? (y/N): " confirmation
+    if [[ "${confirmation}" = [yY] || "${confirmation}" = [yY][eE][sS] ]]; then
+        sudo apt update
+        sudo apt install nginx
+    else
+        error "Please install nginx first!"
+        usage
+        exit 1
+    fi
+fi
+sudo sed -i "s/www-data/${USER}/g" "/etc/nginx/nginx.conf"
+
 if [[ -z $PROJECT_DIR ]]; then
 	if [[ -z $(command -v fzf) ]]; then
-        error "No project given, either provide a project or install fzf..."
-		usage
-		exit 1
+        info "No project given and fzf (fuzzy finder) not installed"
+        read -rp "Install now? (y/N): " confirmed
+        if [[ "${confirmed}" = [yY] || "${confirmed}" = [yY][eE][sS] ]]; then
+            sudo apt update
+            sudo apt install fzf
+        else
+            error "Please either provide a project or install fzf"
+            usage
+            exit 1
+        fi
 	fi
 	info "No project given, using fuzzy finder..."
 	sleep 1
@@ -110,7 +131,6 @@ fi
 
 # Get just the final project directory name without the path and without any leading or trailing whitespace or EOL/null characters
 PROJECT_NAME=$(basename -z "${PROJECT_DIR}" | xargs --null)
-
 if [[ -z "$PROJECT_NAME" ]]; then
 	error "Invalid project name"
 	usage
@@ -124,15 +144,21 @@ PROJECT_DIR="${BASE_PATH}/${PROJECT_NAME}"
 PROJECT_NAME=$(echo "${PROJECT_NAME}" | tr " " "-")
 
 PHP="php${PHPVER}"
-
 if [[ -z $(which "${PHP}") ]]; then
 	info "${PHP} not installed"
 	read -rp "Install now? (y/N): " confirm
-
 	if [[ "${confirm}" = [yY] || "${confirm}" = [yY][eE][sS] ]]; then
+        if [[ -z $(find /etc/apt -type f -iname "ondrej-ubuntu-php*") ]]; then
+            info "Adding ondrej/php ppa to the system repositories"
+            sleep 1
+            sudo apt update
+            sudo apt install software-properties-common -y
+            sudo add-apt-repository ppa:ondrej/php
+        fi
 		sudo apt update
         sudo apt install "${PHP}" "${PHP}-fpm" "${PHP}-cli" "${PHP}-imagick" "${PHP}-intl" "${PHP}-redis" "${PHP}-yaml" "${PHP}-zip" "${PHP}-gnupg" -y
         sudo apt install "${PHP}-imap" "${PHP}-mysql" "${PHP}-gd" "${PHP}-mbstring" "${PHP}-curl" "${PHP}-xml" "${PHP}-bcmath" "${PHP}-xdebug" "${PHP}-pgsql" -y
+        wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/xdebug3.ini | sudo tee "/etc/php/${PHPVER}/mods-available/xdebug.ini"
         print "PHP ${PHPVER} installed"
         sleep 1
 	fi
@@ -149,7 +175,6 @@ fi
 
 info "Setting up nginx server block..."
 sleep 1
-
 cat <<EOL | sudo tee "/etc/nginx/sites-available/${PROJECT_NAME}"
 server {
 	listen 80;
@@ -192,7 +217,6 @@ EOL
 
 info "Creating symlinks..."
 sleep 1
-
 sudo rm -f "/etc/nginx/sites-enabled/${PROJECT_NAME}"
 sudo ln -s "/etc/nginx/sites-available/${PROJECT_NAME}" "/etc/nginx/sites-enabled/${PROJECT_NAME}"
 
@@ -216,7 +240,6 @@ if ! sudo ss -tupln | grep -q "nginx"; then
     sudo systemctl enable --now nginx
     sleep 5
 fi
-
 sudo systemctl restart nginx
 
 print "${COLOR_GREEN}"

@@ -16,18 +16,38 @@ print() {
 	fi
 }
 
+error() {
+    print "${COLOR_RED}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+info() {
+    print "${COLOR_YELLOW}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+warning() {
+    print "${COLOR_BLUE}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+success() {
+    print "${COLOR_GREEN}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
 if [[ -z $(command -v curl) ]]; then
-	print "${COLOR_RED}"
-	print "NVM has not been installed..."
-	print "Please install curl before running this script!"
-	print "${COLOR_RESET}"
+	error "NVM has not been installed..."
+	error "Please install curl before running this script!"
     sleep 2
 	exit 0
 fi
 
-print "${COLOR_YELLOW}"
-print "Installing nvm, node, and npm"
-print "${COLOR_RESET}"
+info "Installing nvm, node, and npm"
 sleep 2
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
@@ -40,37 +60,25 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 nvm install --lts
 
 if [[ -n $(command -v node) ]]; then
-    print "${COLOR_GREEN}"
-    print "Node Installed Successfully!"
-    print "${COLOR_RESET}"
+    success "Node Installed Successfully!"
     sleep 1
 else
-    print "${COLOR_BLUE}"
-    print "Node Not Found On Path! You may need to log out and then in again..."
-    print "${COLOR_RESET}"
+    warning "Node Not Found On Path! You may need to log out and then in again..."
     sleep 1
 fi
 
 if [[ -n $(command -v npm) ]]; then
-    print "${COLOR_GREEN}"
-    print "NPM Installed Successfully!"
-    print "${COLOR_RESET}"
+    success "NPM Installed Successfully!"
     sleep 1
 else
-    print "${COLOR_BLUE}"
-    print "NPM Not Found On Path! You may need to log out and then in again..."
-    print "${COLOR_RESET}"
+    warning "NPM Not Found On Path! You may need to log out and then in again..."
     sleep 1
 fi
 
 if [[ -n $(command -v nvm) ]]; then
-    print "${COLOR_GREEN}"
-    print "NVM Installed Successfully!"
-    print "${COLOR_RESET}"
+    success "NVM Installed Successfully!"
     sleep 1
 else
-    print "${COLOR_BLUE}"
-    print "NVM Not Found On Path! You may need to log out and then in again..."
-    print "${COLOR_RESET}"
+    warning "NVM Not Found On Path! You may need to log out and then in again..."
     sleep 1
 fi

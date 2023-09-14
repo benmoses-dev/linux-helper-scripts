@@ -16,24 +16,42 @@ print() {
 	fi
 }
 
+error() {
+    print "${COLOR_RED}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+info() {
+    print "${COLOR_YELLOW}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+warning() {
+    print "${COLOR_BLUE}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+success() {
+    print "${COLOR_GREEN}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
 if [[ "$EUID" -ne 0 ]]; then
-	print "${COLOR_RED}"
-	print "Docker has not been installed..."
-	print "Please run this script as root!"
-	print "${COLOR_RESET}"
+	error "Docker has not been installed..."
+	error "Please run this script as root!"
     sleep 1
 	exit 0
 fi
 
 if [[ -n $(command -v docker) ]]; then
-	print "${COLOR_RED}"
-	print "Docker is already installed!"
-	print "${COLOR_RESET}"
+	warning "Docker is already installed!"
 	sleep 1
 else
-	print "${COLOR_YELLOW}"
-	print "Installing docker..."
-	print "${COLOR_RESET}"
+	info "Installing docker..."
 	sleep 2
 	apt update && apt install curl gnupg -y
 	mkdir -m 0755 -p /etc/apt/keyrings
@@ -46,14 +64,10 @@ else
 	apt update && apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
     if [[ -n $(command -v docker) ]]; then
-        print "${COLOR_GREEN}"
-        print "Docker Installed Successfully!"
-        print "${COLOR_RESET}"
+        success "Docker Installed Successfully!"
         sleep 1
     else
-        print "${COLOR_RED}"
-        print "Docker Not Found On Path!"
-        print "${COLOR_RESET}"
+        error "Docker Not Found On Path!"
         sleep 1
     fi
 fi

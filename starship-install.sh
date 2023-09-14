@@ -16,33 +16,43 @@ print() {
 	fi
 }
 
+error() {
+    print "${COLOR_RED}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+info() {
+    print "${COLOR_YELLOW}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+success() {
+    print "${COLOR_GREEN}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
 if [[ -z $(command -v curl) ]] || [[ -z $(command -v wget) ]]; then
-	print "${COLOR_RED}"
-	print "Starship has not been installed..."
-	print "Please install curl and wget before running this script!"
-	print "${COLOR_RESET}"
+	error "Starship has not been installed..."
+	error "Please install curl and wget before running this script!"
     sleep 1
 	exit 0
 fi
 
 if [[ -n $(command -v starship) ]]; then
-	print "${COLOR_RED}"
-	print "Starship is already installed!"
-	print "${COLOR_RESET}"
+	error "Starship is already installed!"
 	sleep 1
 else
 	mkdir -p "${HOME}/.local/bin"
 	mkdir -p "${HOME}/.config"
 
-	print "${COLOR_YELLOW}"
-	print "Installing starship"
-	print "${COLOR_RESET}"
+	info "Installing starship"
 	sleep 2
 	curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir "${HOME}/.local/bin"
 
-	print "${COLOR_YELLOW}"
-	print "Configuring Starship"
-	print "${COLOR_RESET}"
+	info "Configuring Starship"
 	sleep 2
 	wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/starship.toml >"${HOME}/.config/starship.toml"
 
@@ -50,14 +60,10 @@ else
 	echo 'eval "$(starship init bash)"' >>"${HOME}/.bashrc"
 
     if [[ -n $(command -v starship) || -f "${HOME}/.local/bin/starship" ]]; then
-        print "${COLOR_GREEN}"
-        print "Starship Installed Successfully!"
-        print "${COLOR_RESET}"
+        success "Starship Installed Successfully!"
         sleep 1
     else
-        print "${COLOR_RED}"
-        print "Something went wrong - starship not found!"
-        print "${COLOR_RESET}"
+        error "Something went wrong - starship not found!"
         sleep 1
     fi
 fi

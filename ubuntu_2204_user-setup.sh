@@ -16,18 +16,38 @@ print() {
 	fi
 }
 
+error() {
+    print "${COLOR_RED}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+info() {
+    print "${COLOR_YELLOW}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+warning() {
+    print "${COLOR_BLUE}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+success() {
+    print "${COLOR_GREEN}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
 if [[ -z $(command -v curl) ]] || [[ -z $(command -v wget) ]]; then
-	print "${COLOR_RED}"
-	print "Please install curl and wget before running this script!"
-	print "${COLOR_RESET}"
+	error "Please install curl and wget before running this script!"
     sleep 1
 	exit 0
 fi
 
 if [[ -z $(command -v git) ]]; then
-	print "${COLOR_RED}"
-	print "Please install git before running this script!"
-	print "${COLOR_RESET}"
+	error "Please install git before running this script!"
     sleep 1
 	exit 0
 fi
@@ -35,9 +55,7 @@ fi
 mkdir -p "${HOME}/.local/bin"
 mkdir -p "${HOME}/.config"
 
-print "${COLOR_YELLOW}"
-print "Configuring bash"
-print "${COLOR_RESET}"
+info "Configuring bash"
 sleep 2
 
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.bash_aliases >"${HOME}/.bash_aliases"
@@ -47,9 +65,7 @@ echo 'export EDITOR=nvim' >>"${HOME}/.bashrc"
 echo 'export FZF_DEFAULT_COMMAND="fdfind --hidden --no-ignore --exclude **/.git/*"' >>"${HOME}/.bashrc"
 echo 'export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"' >>"${HOME}/.bashrc"
 
-print "${COLOR_YELLOW}"
-print "Installing rust"
-print "${COLOR_RESET}"
+info "Installing rust"
 sleep 2
 
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -60,26 +76,20 @@ wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/ma
 # install composer
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/composer-install.sh | bash
 
-print "${COLOR_YELLOW}"
-print "Installing web server automation script"
-print "${COLOR_RESET}"
+info "Installing web server automation script"
 sleep 2
 
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/setup-nginx-site >"${HOME}/.local/bin/setup-site"
 chmod 755 "${HOME}/.local/bin/setup-site"
 
-print "${COLOR_YELLOW}"
-print "Configuring tmux"
-print "${COLOR_RESET}"
+info "Configuring tmux"
 sleep 2
 
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/tmux-sessionizer >"${HOME}/.local/bin/tmux-sessionizer"
 chmod 755 "${HOME}/.local/bin/tmux-sessionizer"
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.tmux.conf >"${HOME}/.tmux.conf"
 
-print "${COLOR_YELLOW}"
-print "Configuring vim and neovim"
-print "${COLOR_RESET}"
+info "Configuring vim and neovim"
 sleep 2
 
 # legacy vim config
@@ -88,9 +98,7 @@ wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/ma
 
 # neovim setup
 if [[ -n $(command -v nvim) ]]; then
-	print "${COLOR_RED}"
-	print "Neovim is already installed!"
-	print "${COLOR_RESET}"
+	error "Neovim is already installed!"
 	sleep 1
 else
 	if [[ ! -f "${HOME}/.local/bin/nvim" ]]; then
@@ -109,18 +117,13 @@ else
 		npm install -g tree-sitter-cli
 	fi
 
-	print "${COLOR_GREEN}"
-	print "Neovim installed successfully!"
-	print "${COLOR_BLUE}"
-	print "Consider moving the binary to /usr/local/bin if you have root privileges..."
-	print "${COLOR_RESET}"
+	success "Neovim installed successfully!"
+	warning "Consider moving the binary to /usr/local/bin if you have root privileges..."
 	sleep 2
 fi
 
 # install starship
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/starship-install.sh | bash
 
-print "${COLOR_GREEN}"
-print "User software installed successfully!"
-print "${COLOR_RESET}"
+success "User software installed successfully!"
 sleep 1

@@ -96,7 +96,7 @@ if [[ -z $(command -v nginx) ]]; then
     read -rp "Install now? (y/N): " confirmation
     if [[ "${confirmation}" = [yY] || "${confirmation}" = [yY][eE][sS] ]]; then
         sudo apt update
-        sudo apt install nginx
+        sudo apt install nginx -y
     else
         error "Please install nginx first!"
         usage
@@ -105,13 +105,13 @@ if [[ -z $(command -v nginx) ]]; then
 fi
 sudo sed -i "s/www-data/${USER}/g" "/etc/nginx/nginx.conf"
 
-if [[ -z $PROJECT_DIR ]]; then
+if [[ -z "$PROJECT_DIR" ]]; then
 	if [[ -z $(command -v fzf) ]]; then
         info "No project given and fzf (fuzzy finder) not installed"
         read -rp "Install now? (y/N): " confirmed
         if [[ "${confirmed}" = [yY] || "${confirmed}" = [yY][eE][sS] ]]; then
             sudo apt update
-            sudo apt install fzf
+            sudo apt install fzf -y
         else
             error "Please either provide a project or install fzf"
             usage

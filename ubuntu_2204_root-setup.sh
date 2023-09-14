@@ -16,6 +16,30 @@ print() {
 	fi
 }
 
+error() {
+    print "${COLOR_RED}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+info() {
+    print "${COLOR_YELLOW}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+warning() {
+    print "${COLOR_BLUE}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+success() {
+    print "${COLOR_GREEN}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
 if [[ "$EUID" -ne 0 ]]; then
 	print "${COLOR_RED}"
 	print "Please run this script as root!"
@@ -24,18 +48,14 @@ if [[ "$EUID" -ne 0 ]]; then
 	exit 0
 fi
 
-print "${COLOR_YELLOW}"
-print "Updating System..."
-print "${COLOR_RESET}"
+info "Updating System..."
 sleep 1
 
 apt update && apt upgrade -y
 snap refresh
 apt autoremove -y
 
-print "${COLOR_YELLOW}"
-print "Installing System Software"
-print "${COLOR_RESET}"
+info "Installing System Software"
 sleep 2
 
 apt install gnupg git build-essential openjdk-17-jdk python3-dev python3-pip python3-venv mesa-utils-bin -y
@@ -52,9 +72,7 @@ systemctl restart nginx.service
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/docker-install.sh | bash
 
 if [[ -z $(command -v docker) ]]; then
-    print "${COLOR_RED}"
-    print "Docker Not Installed!"
-    print "${COLOR_RESET}"
+    error "Docker Not Installed!"
     sleep 1
 fi
 
@@ -62,13 +80,9 @@ fi
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/php-install.sh | bash
 
 if [[ -z $(command -v php) ]]; then
-    print "${COLOR_RED}"
-    print "PHP Not Installed!"
-    print "${COLOR_RESET}"
+    error "PHP Not Installed!"
     sleep 1
 fi
 
-print "${COLOR_GREEN}"
-print "System Software Install Finished!"
-print "${COLOR_RESET}"
+success "System Software Install Finished!"
 sleep 1

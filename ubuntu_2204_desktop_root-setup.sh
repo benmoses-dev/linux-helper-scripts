@@ -16,17 +16,38 @@ print() {
 	fi
 }
 
+error() {
+    print "${COLOR_RED}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+info() {
+    print "${COLOR_YELLOW}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+warning() {
+    print "${COLOR_BLUE}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
+success() {
+    print "${COLOR_GREEN}"
+    print "${1}"
+    print "${COLOR_RESET}"
+}
+
 if [[ "$EUID" -ne 0 ]]; then
-	print "${COLOR_RED}"
-	print "Please run this script as root!"
-	print "${COLOR_RESET}"
+	error "Please run this script as root!"
     sleep 1
 	exit 0
 fi
 
 showLogo() {
-	print "${COLOR_YELLOW}"
-	print "Ubuntu Setup"
+	info "Ubuntu Setup"
 	print "${COLOR_BLUE}"
 	print " ___    _____   __  _  _  _______   ___    ____   "
 	print "|   \  |  ___| / / | |/ /|__   __| / _ \  |  _ \  "
@@ -44,21 +65,15 @@ sleep 2
 # install system software
 wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_root-setup.sh | bash
 
-print "${COLOR_YELLOW}"
-print "Installing Desktop Software"
-print "${COLOR_RESET}"
+info "Installing Desktop Software"
 sleep 2
 apt update && apt install vlc filezilla gnome-tweaks libreoffice libreoffice-help-en-gb virt-manager -y
 
 if [[ -n $(command -v syncthing) ]]; then
-	print "${COLOR_RED}"
-	print "Syncthing is already installed!"
-	print "${COLOR_RESET}"
+	error "Syncthing is already installed!"
 	sleep 1
 else
-	print "${COLOR_YELLOW}"
-	print "Installing Syncthing"
-	print "${COLOR_RESET}"
+	info "Installing Syncthing"
 	sleep 2
 
 	curl -o /usr/share/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg
@@ -67,19 +82,13 @@ else
 	apt update && apt install syncthing -y
 
     if [[ -n $(command -v syncthing) ]]; then
-        print "${COLOR_GREEN}"
-        print "Syncthing Installed Successfully!"
-        print "${COLOR_RESET}"
+        success "Syncthing Installed Successfully!"
         sleep 1
     else
-        print "${COLOR_RED}"
-        print "Syncthing Not Found On Path!"
-        print "${COLOR_RESET}"
+        error "Syncthing Not Found On Path!"
         sleep 1
     fi
 fi
 
-print "${COLOR_GREEN}"
-print "Desktop Software Install Finished!"
-print "${COLOR_RESET}"
+success "Desktop Software Install Finished!"
 sleep 1

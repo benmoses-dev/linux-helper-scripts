@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  mealie-frontend:
+    image: hkotel/mealie:frontend-v1.0.0beta-5
+    container_name: mealie-frontend
+    environment:
+      - API_URL=http://mealie-api:9000
+    restart: unless-stopped
+    ports:
+      - "3003:3000"
+    depends_on:
+      - mealie-api
+    volumes:
+      - mealie-data:/app/data/
+  mealie-api:
+    image: hkotel/mealie:api-v1.0.0beta-5
+    container_name: mealie-api
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+    volumes:
+      - mealie-data:/app/data/
+    environment:
+      - ALLOW_SIGNUP=true
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - MAX_WORKERS=1
+      - WEB_CONCURRENCY=1
+    restart: unless-stopped
+
+volumes:
+  mealie-data:
+    driver: local

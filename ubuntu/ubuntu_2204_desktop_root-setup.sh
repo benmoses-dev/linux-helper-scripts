@@ -63,7 +63,7 @@ showLogo
 sleep 2
 
 # install system software
-wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu_2204_root-setup.sh | bash
+wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu/ubuntu_2204_root-setup.sh | bash
 
 info "Installing Desktop Software"
 sleep 2

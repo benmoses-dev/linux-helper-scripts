@@ -79,13 +79,13 @@ wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/ma
 info "Installing web server automation script"
 sleep 2
 
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/setup-nginx-site >"${HOME}/.local/bin/setup-site"
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu/setup-site >"${HOME}/.local/bin/setup-site"
 chmod 755 "${HOME}/.local/bin/setup-site"
 
 info "Configuring tmux"
 sleep 2
 
-wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/tmux-sessionizer >"${HOME}/.local/bin/tmux-sessionizer"
+wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu/tmux-sessionizer >"${HOME}/.local/bin/tmux-sessionizer"
 chmod 755 "${HOME}/.local/bin/tmux-sessionizer"
 wget -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/.tmux.conf >"${HOME}/.tmux.conf"
 

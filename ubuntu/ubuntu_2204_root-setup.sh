@@ -69,7 +69,7 @@ sed -i 's/#server_tokens/server_tokens/g' /etc/nginx/nginx.conf
 systemctl restart nginx.service
 
 # install docker
-wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/docker-install.sh | bash
+wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu/docker-install.sh | bash
 
 if [[ -z $(command -v docker) ]]; then
     error "Docker Not Installed!"
@@ -77,7 +77,7 @@ if [[ -z $(command -v docker) ]]; then
 fi
 
 # install php
-wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/php-install.sh | bash
+wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-scripts/main/ubuntu/php-install.sh | bash
 
 if [[ -z $(command -v php) ]]; then
     error "PHP Not Installed!"

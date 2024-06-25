@@ -105,10 +105,6 @@ else
 		wget --quiet -O "${HOME}/.local/bin/nvim" https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 		chmod u+x "${HOME}/.local/bin/nvim"
 	fi
-	mkdir -p "${HOME}/.local/share/nvim/site/pack/packer/start"
-	if [[ ! -d "${HOME}/.local/share/nvim/site/pack/packer/start/packer.nvim" ]]; then
-		git clone --depth 1 https://github.com/wbthomason/packer.nvim "${HOME}/.local/share/nvim/site/pack/packer/start/packer.nvim"
-	fi
 	if [[ ! -d "${HOME}/.config/nvim" ]]; then
 		git clone https://github.com/benmoses-dev/my-neovim.git "${HOME}/.config/nvim"
 	fi

@@ -67,7 +67,7 @@ wget --quiet -O - https://raw.githubusercontent.com/benmoses-dev/linux-helper-sc
 
 info "Installing Desktop Software"
 sleep 2
-apt update && apt install vlc filezilla gnome-tweaks libreoffice libreoffice-help-en-gb virt-manager -y
+apt update && apt install vlc filezilla gnome-tweaks libreoffice libreoffice-help-en-gb virt-manager i3 picom feh -y
 
 if [[ -n $(command -v syncthing) ]]; then
 	error "Syncthing is already installed!"

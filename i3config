@@ -11,6 +11,8 @@
 
 set $mod Mod4
 
+exec --no-startup-id /home/user/.screenlayout/config.sh
+
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:UbuntuMono Nerd Font
@@ -61,12 +63,12 @@ bindsym $mod+Return exec kitty
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id dmenu_run
+# bindsym $mod+d exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
-# bindcode $mod+40 exec "rofi -modi drun,run -show drun"
+bindsym $mod+d exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
-# bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
+# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
 bindsym $mod+h focus left
@@ -130,6 +132,17 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+
+workspace $ws1 output DP-1-1 eDP-1-1
+workspace $ws2 output DP-1-1 eDP-1-1
+workspace $ws3 output DP-1-1 eDP-1-1
+workspace $ws4 output DP-1-1 eDP-1-1
+workspace $ws5 output DP-1-1 eDP-1-1
+workspace $ws6 output DP-1-1 eDP-1-1
+workspace $ws7 output DP-1-1 eDP-1-1
+workspace $ws8 output DP-1-1 eDP-1-1
+workspace $ws9 output DP-1-1 eDP-1-1
+workspace $ws10 output eDP-1-1
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -215,11 +228,9 @@ bar {
         }
 }
 
-exec_always feh --bg-fill /home/user/Pictures/wallpapers/eberhard-grossgasteiger-PiUqyp65EWg-unsplash.jpg
-exec_always picom -f --vsync
+exec_always --no-startup-id picom -f --vsync
+exec_always --no-startup-id feh --bg-fill /home/user/Pictures/wallpapers/eberhard-grossgasteiger-PiUqyp65EWg-unsplash.jpg
 
-exec kitty
-exec firefox
-exec nautilus
-
-exec xrandr --output eDP-1 --primary --mode 1920x1080 --rate 120 --pos 0x0 --rotate normal --output HDMI-1 --off --output DP-1 --off --output HDMI-2 --off
+exec --no-startup-id kitty
+exec --no-startup-id firefox
+exec --no-startup-id nautilus

@@ -11,7 +11,8 @@
 
 set $mod Mod4
 
-exec --no-startup-id /home/user/.screenlayout/config.sh
+exec_always --no-startup-id picom -f --vsync
+exec_always --no-startup-id "sleep 2 && /home/user/.screenlayout/config.sh && feh --bg-fill /home/user/Pictures/wallpapers/eberhard-grossgasteiger-PiUqyp65EWg-unsplash.jpg"
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -227,9 +228,6 @@ bar {
             separator #757575
         }
 }
-
-exec_always --no-startup-id picom -f --vsync
-exec_always --no-startup-id feh --bg-fill /home/user/Pictures/wallpapers/eberhard-grossgasteiger-PiUqyp65EWg-unsplash.jpg
 
 exec --no-startup-id kitty
 exec --no-startup-id firefox

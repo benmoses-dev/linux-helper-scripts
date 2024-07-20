@@ -12,7 +12,9 @@
 set $mod Mod4
 
 exec_always --no-startup-id picom -f --vsync
-exec_always --no-startup-id "sleep 2 && /home/user/.screenlayout/config.sh && feh --bg-fill /home/user/Pictures/wallpapers/eberhard-grossgasteiger-PiUqyp65EWg-unsplash.jpg"
+exec_always --no-startup-id "sleep 2 && /home/user/.screenlayout/config.sh; feh --bg-fill /home/user/Pictures/wallpapers/eberhard-grossgasteiger-PiUqyp65EWg-unsplash.jpg"
+
+focus_follows_mouse no
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -126,7 +128,7 @@ bindsym $mod+a focus parent
 set $ws1 " 1: Terminal   "
 set $ws2 " 2: Firefox   "
 set $ws3 " 3: Files   "
-set $ws4 "4"
+set $ws4 " 4: IDEs "
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
@@ -149,7 +151,7 @@ workspace $ws10 output eDP-1-1
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
 bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace number $ws4
+bindsym $mod+4 workspace $ws4
 bindsym $mod+5 workspace number $ws5
 bindsym $mod+6 workspace number $ws6
 bindsym $mod+7 workspace number $ws7
@@ -161,7 +163,7 @@ bindsym $mod+0 workspace number $ws10
 bindsym $mod+Shift+1 move container to workspace $ws1
 bindsym $mod+Shift+2 move container to workspace $ws2
 bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+4 move container to workspace $ws4
 bindsym $mod+Shift+5 move container to workspace number $ws5
 bindsym $mod+Shift+6 move container to workspace number $ws6
 bindsym $mod+Shift+7 move container to workspace number $ws7
@@ -173,6 +175,7 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 assign [class="kitty"] $ws1
 assign [class="firefox"] $ws2
 assign [class="Org.gnome.Nautilus"] $ws3
+assign [class="jetbrains-phpstorm"] $ws4
 
 # reload the configuration file
 bindsym $mod+Shift+c reload

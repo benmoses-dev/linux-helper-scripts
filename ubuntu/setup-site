@@ -91,6 +91,32 @@ while [ "$#" -gt 0 ]; do
 	esac
 done
 
+if [[ -z $(command -v mkcert) ]]; then
+    info "Mkcert not installed"
+    read -rp "Install now? (y/N): " confirmation
+    if [[ "${confirmation}" = [yY] || "${confirmation}" = [yY][eE][sS] ]]; then
+        sudo apt update
+        sudo apt install mkcert -y
+    else
+        error "Please install mkcert first"
+        usage
+        exit 1
+    fi
+fi
+
+if [[ -z $(command -v hostctl) ]]; then
+    info "Hostctl not installed"
+    read -rp "Install now? (y/N): " confirmation
+    if [[ "${confirmation}" = [yY] || "${confirmation}" = [yY][eE][sS] ]]; then
+        sudo apt update
+        sudo apt install hostctl -y
+    else
+        error "Please install hostctl first"
+        usage
+        exit 1
+    fi
+fi
+
 if [[ -z $(command -v nginx) ]]; then
     info "Nginx not installed"
     read -rp "Install now? (y/N): " confirmation
@@ -173,18 +199,34 @@ if [[ "${LARAVEL}" == true ]]; then
 	PUBLIC_DIR="/public"
 fi
 
+keyfile="/etc/ssl/private/"
+certfile="/etc/ssl/certs/"
+domain="${PROJECT_NAME}.local"
+if [ ! -f "${certfile}" ]; then
+    info "Generating new self signed certificate"
+    mkcert "${domain}"
+
+    sudo mv "${domain}.pem" "${certfile}"
+    sudo mv "${domain}-key.pem" "${keyfile}"
+fi
+
+mkdir -p "${HOME}/.config/nginx/logs"
+
 info "Setting up nginx server block..."
 sleep 1
 cat <<EOL | sudo tee "/etc/nginx/sites-available/${PROJECT_NAME}"
 server {
-	listen 80;
-	listen [::]:80;
+	listen 443 ssl;
+	listen [::]:443 ssl;
+ 
+    ssl_certificate ${certfile}${domain}.pem;
+    ssl_certificate_key ${keyfile}${domain}-key.pem;
 
 	server_name ${PROJECT_NAME}.local;
     root ${PROJECT_DIR}${PUBLIC_DIR};
 
-	access_log /var/log/nginx/${PROJECT_NAME}-access.log;
-    error_log  /var/log/nginx/${PROJECT_NAME}-error.log error;
+	access_log ${HOME}/.config/nginx/logs/${PROJECT_NAME}-access.log;
+    error_log  ${HOME}/.config/nginx/logs/${PROJECT_NAME}-error.log error;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
@@ -212,6 +254,14 @@ server {
     location ~ /\.(?!well-known).* {
         deny all;
     }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+ 
+    server_name ${PROJECT_NAME}.local;
+    return 302 https://\$server_name\$request_uri;
 }
 EOL
 
@@ -242,7 +292,12 @@ if ! sudo ss -tupln | grep -q "nginx"; then
 fi
 sudo systemctl restart nginx
 
+sudo hostctl add domains local ${domain}
+
 print "${COLOR_GREEN}"
 print "Done! Go to ${PROJECT_NAME}.local to test the site"
+
+firefox ${PROJECT_NAME}.local
+
 print "${COLOR_RESET}"
 sleep 1

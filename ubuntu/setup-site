@@ -199,18 +199,19 @@ if [[ "${LARAVEL}" == true ]]; then
 	PUBLIC_DIR="/public"
 fi
 
-keyfile="/etc/ssl/private/"
-certfile="/etc/ssl/certs/"
-domain="${PROJECT_NAME}.local"
-if [ ! -f "${certfile}" ]; then
+KEYFILE="/etc/ssl/private/"
+CERTFILE="/etc/ssl/certs/"
+DOMAIN="${PROJECT_NAME}.local"
+if [ ! -f "${CERTFILE}" ]; then
     info "Generating new self signed certificate"
-    mkcert "${domain}"
+    mkcert "${DOMAIN}"
 
-    sudo mv "${domain}.pem" "${certfile}"
-    sudo mv "${domain}-key.pem" "${keyfile}"
+    sudo mv "${DOMAIN}.pem" "${CERTFILE}"
+    sudo mv "${DOMAIN}-key.pem" "${KEYFILE}"
 fi
 
-mkdir -p "${HOME}/.config/nginx/logs"
+# This is a slightly better way than logging under ~/.config
+sudo chown -R "${USER}":"${USER}" /var/log/nginx
 
 info "Setting up nginx server block..."
 sleep 1
@@ -219,14 +220,14 @@ server {
 	listen 443 ssl;
 	listen [::]:443 ssl;
  
-    ssl_certificate ${certfile}${domain}.pem;
-    ssl_certificate_key ${keyfile}${domain}-key.pem;
+    ssl_certificate ${CERTFILE}${DOMAIN}.pem;
+    ssl_certificate_key ${KEYFILE}${DOMAIN}-key.pem;
 
 	server_name ${PROJECT_NAME}.local;
     root ${PROJECT_DIR}${PUBLIC_DIR};
 
-	access_log ${HOME}/.config/nginx/logs/${PROJECT_NAME}-access.log;
-    error_log  ${HOME}/.config/nginx/logs/${PROJECT_NAME}-error.log error;
+	access_log /var/log/nginx/${PROJECT_NAME}-access.log;
+    error_log  /var/log/nginx/${PROJECT_NAME}-error.log error;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
@@ -292,12 +293,12 @@ if ! sudo ss -tupln | grep -q "nginx"; then
 fi
 sudo systemctl restart nginx
 
-sudo hostctl add domains local ${domain}
+sudo hostctl add domains local "${DOMAIN}"
 
 print "${COLOR_GREEN}"
 print "Done! Go to ${PROJECT_NAME}.local to test the site"
 
-firefox ${PROJECT_NAME}.local
+firefox "${PROJECT_NAME}.local"
 
 print "${COLOR_RESET}"
 sleep 1

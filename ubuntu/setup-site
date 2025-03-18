@@ -104,18 +104,6 @@ if [[ -z $(command -v mkcert) ]]; then
     fi
 fi
 
-if [[ -z $(command -v hostctl) ]]; then
-    info "Hostctl not installed"
-    read -rp "Install now? (y/N): " confirmation
-    if [[ "${confirmation}" = [yY] || "${confirmation}" = [yY][eE][sS] ]]; then
-        sudo apt update
-        sudo apt install hostctl -y
-    else
-        error "Please install hostctl first"
-        usage
-        exit 1
-    fi
-fi
 
 if [[ -z $(command -v nginx) ]]; then
     info "Nginx not installed"
@@ -293,7 +281,9 @@ if ! sudo ss -tupln | grep -q "nginx"; then
 fi
 sudo systemctl restart nginx
 
-sudo hostctl add domains local "${DOMAIN}"
+if [[ -n $(command -v hostctl) ]]; then
+    sudo hostctl add domains local "${DOMAIN}"
+fi
 
 print "${COLOR_GREEN}"
 print "Done! Go to ${PROJECT_NAME}.local to test the site"
